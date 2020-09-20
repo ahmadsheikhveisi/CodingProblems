@@ -215,6 +215,25 @@ ull choose(ull n, ull k) {
   //printf("result %llu %llu %llu\n",n,k,result);
   
   //printf("-----------\n");
-    
-  return fact_limited(n,MAX(n-k,k))/fact_limited(MIN(n - k,k),1);//result; //
+  
+  ull result = 1;
+  ull u_limit = MAX(n-k,k);
+  ull l_limit = MIN(n-k,k);
+  ull dom = 2;
+  //printf("u_limit %llu \n",u_limit);
+  //printf("l_limit %llu \n",l_limit);
+  while (n > u_limit){
+    result *= n;
+    //printf("result %llu \n",result);
+    while ((dom <= l_limit) && (result % dom == 0)){
+      //printf("=dom %llu \n",dom);
+      result /= dom;
+      //printf("=result %llu \n",result);
+      dom++;
+    }
+    n--;
+  }
+  //printf("-----------\n"); 
+  //return fact_limited(n,MAX(n-k,k))/fact_limited(MIN(n - k,k),1);//result; //
+  return result / fact_limited(l_limit,dom - 1);
 }

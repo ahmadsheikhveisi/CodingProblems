@@ -30,9 +30,10 @@ constexpr bool canSum(const std::array<int, Size>& inarr, int sum) {
 
 // time complexity for hash is O(m*n)
 // space complexity for hash is O(m)
-std::unordered_map<int, bool> possibleSum;
+
 template<std::size_t Size>
-constexpr bool canSum_hash(const std::array<int, Size>& inarr, int sum) {
+constexpr bool canSum_hash_(const std::array<int, Size>& inarr, int sum,
+                            std::unordered_map<int, bool>& possibleSum) {
     if (possibleSum.find(sum) != possibleSum.end()) {
         // std::cout << "found " << sum << '\n';
         return possibleSum[sum];
@@ -43,7 +44,7 @@ constexpr bool canSum_hash(const std::array<int, Size>& inarr, int sum) {
             res = true;
             break;
         } else if (sum > num) {
-            res = canSum_hash(inarr, sum - num);
+            res = canSum_hash_(inarr, sum - num, possibleSum);
             if (res == true) {
                 break;
             }
@@ -54,16 +55,17 @@ constexpr bool canSum_hash(const std::array<int, Size>& inarr, int sum) {
     return res;
 }
 
+template<std::size_t Size>
+bool canSum_hash(const std::array<int, Size>& inarr, int sum) {
+    std::unordered_map<int, bool> possibleSum;
+    return canSum_hash_(inarr, sum, possibleSum);
+}
+
 int main() {
     std::cout << canSum_hash<2>({2, 3}, 7) << '\n';
-    possibleSum.clear();
     std::cout << canSum_hash<4>({5, 3, 4, 7}, 7) << '\n';
-    possibleSum.clear();
     std::cout << canSum_hash<2>({2, 4}, 7) << '\n';
-    possibleSum.clear();
     std::cout << canSum_hash<3>({2, 3, 5}, 8) << '\n';
-    possibleSum.clear();
     std::cout << canSum_hash<2>({7, 14}, 300) << '\n';
-    possibleSum.clear();
     return 0;
 }

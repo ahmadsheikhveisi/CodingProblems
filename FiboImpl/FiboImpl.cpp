@@ -9,6 +9,7 @@
 #include <utility>
 #include <tuple>
 #include <unordered_map>
+#include <algorithm>
 
 int fib_classic(int i) {
     if (i <= 1) {
@@ -72,7 +73,19 @@ int fib_template_variadic(const int i) {
     return fib_impl_m(std::make_index_sequence<47>{}, i);
 }
 
-
+int fib_tabulation(const int i) {
+    std::vector<int> fib_table(i + 1, 0);
+    fib_table.at(1) = 1;
+    for (auto it = fib_table.begin(); it < fib_table.end(); ++it) {
+        if (it + 1 < fib_table.end()) {
+            *(it + 1) += *it;
+        }
+        if (it + 2 < fib_table.end()) {
+            *(it + 2) += *it;
+        }
+    }
+    return fib_table.back();
+}
 
 int main(int argc, char **argv) {
     std::cout << "Hello world\n";
@@ -110,6 +123,8 @@ int main(int argc, char **argv) {
     std::cout << "Lambda " << fib_lambda().next(45) << '\n';
 
     std::cout << "fib hash " << fib_hash(45) << '\n';
+
+    std::cout << "fib tabulation " << fib_tabulation(46) << '\n';
 
     int num = 10;
     //  std::cin >> num;

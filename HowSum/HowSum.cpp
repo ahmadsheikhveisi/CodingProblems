@@ -51,6 +51,35 @@ std::vector<int> howSum_hash(int sum, const std::vector<int>& inarr) {
     return howSum_hash_(sum, inarr, &hashTable);
 }
 
+std::vector<int> howSum_table(int sum, const std::vector<int>&invec) {
+    std::vector<std::vector<int>> res(sum + 1, std::vector<int>());
+    // seed from zero
+    for (const auto& num : invec) {
+        if (num < res.size()) {
+            res[num].push_back(num);
+        }
+    }
+    bool found = false;
+    // res[0] is always empty because it is always possible to get no element
+    for (auto it = begin(res) + 1; it < end(res) && found == false; ++it) {
+        if (it->size() != 0) {
+            for (const auto& num : invec) {
+                if (it + num < end(res)) {
+                    (it + num)->clear();
+                    (it + num)->insert((it + num)->end(),
+                                      it->begin(), it->end());
+                    (it + num)->push_back(num);
+                    if (it + num == end(res)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return res[sum];
+}
 
 void printvec(const std::vector<int>& invec) {
     for (const auto& num : invec) {
@@ -60,11 +89,12 @@ void printvec(const std::vector<int>& invec) {
 }
 
 int main() {
-    printvec(howSum_hash(7, {2, 3}));
-    printvec(howSum_hash(7, {5, 3, 4, 7}));
-    printvec(howSum_hash(7, {2, 4}));
-    printvec(howSum_hash(8, {2, 3, 5}));
-    printvec(howSum_hash(300, {7, 14}));
-    printvec(howSum_hash(0, {0, 7, 15}));
+    printvec(howSum_table(7, {2, 3}));  // 2 2 3
+    printvec(howSum_table(7, {5, 3, 4, 7}));  // 3 4
+    printvec(howSum_table(7, {2, 4}));  // empty
+    printvec(howSum_table(8, {2, 3, 5}));  // 2 2 2 2
+    printvec(howSum_table(300, {7, 14}));  // empty
+    printvec(howSum_table(0, {0, 7, 15}));  // 0
+    printvec(howSum_table(0, {1, 7, 15}));  // empty
     return 0;
 }

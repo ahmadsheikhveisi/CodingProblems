@@ -34,23 +34,40 @@ int CountConstruct_(const std::string& targetStr,
     return res;
 }
 
+int CountConstruct_table(const std::string_view targetStr,
+        const std::vector<std::string>& wordBank) {
+    std::vector<int> res(targetStr.size() + 1);
+    res[0] = 1;
+    for (size_t cnt = 0; cnt < res.size(); ++cnt) {
+        if (res[cnt] > 0) {
+            for (const auto& word : wordBank) {
+                if (targetStr.substr(cnt, word.size()) == word) {
+                    res[cnt + word.size()] += res[cnt];
+                }
+            }
+        }
+    }
+    return res.back();
+}
+
 int CountConstrunct(const std::string& targetStr,
         const std::vector<std::string>& wordBank) {
-    std::unordered_map<std::string, int> hashTable;
-    return CountConstruct_(targetStr, wordBank, &hashTable);
+    // std::unordered_map<std::string, int> hashTable;
+    // return CountConstruct_(targetStr, wordBank, &hashTable);
+    return CountConstruct_table(targetStr, wordBank);
 }
 
 int main() {
     std::cout << CountConstrunct("abcdef", {"ab", "cf", "abc", "cd",
-                          "abef", "def", "abcd"}) << '\n';
+                          "abef", "def", "abcd"}) << '\n';  // 1
     std::cout << CountConstrunct("purple", {"purp", "p", "ur", "le",
-                          "purpl"}) << '\n';
+                          "purpl"}) << '\n';  // 2
     std::cout << CountConstrunct("skateboard", {"bo", "rd", "ate",
-                  "t", "ska", "sk", "boar"}) << '\n';
+                  "t", "ska", "sk", "boar"}) << '\n';  // 0
     std::cout << CountConstrunct("enterapotentpot", {"a", "p", "ent",
-                  "enter", "ot", "o", "t"}) << '\n';
+                  "enter", "ot", "o", "t"}) << '\n';  // 4
     std::cout << CountConstrunct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
                 {"e", "ee", "eee", "eeee", "eeeeee",
-                "eeeeeee", "eeeeeeee", "eeeeeeeee"}) << '\n';
+                "eeeeeee", "eeeeeeee", "eeeeeeeee"}) << '\n';  // 0
     return 0;
 }

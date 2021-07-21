@@ -49,9 +49,33 @@ std::vector<int> bestSum_(int sum, const std::vector<int>& inarr,
     return res;
 }
 
+std::vector<int> bestSum_table(int sum, const std::vector<int>& inarr) {
+    std::vector<std::vector<int>> res(sum + 1);
+    for (auto & num : inarr) {
+        res[num].push_back(num);
+    }
+    for (auto it = res.begin() + 1; it < res.end(); ++it) {
+        if (it->size() != 0) {
+            for (const auto& num : inarr) {
+                if ((it + num) < res.end() &&
+                    ((it + num)->size() > it->size() + 1 ||
+                     (it + num)->size() == 0)) {
+                    (it + num)->clear();
+                    (it + num)->insert((it + num)->end(),
+                        it->begin(), it->end());
+                    (it + num)->push_back(num);
+                }
+            }
+        }
+    }
+
+    return res[sum];
+}
+
 std::vector<int> bestSum(int sum, const std::vector<int>& inarr) {
-    std::unordered_map<int, std::vector<int>> hashTable;
-    return bestSum_(sum, inarr, &hashTable);
+    // std::unordered_map<int, std::vector<int>> hashTable;
+    // return bestSum_(sum, inarr, &hashTable);
+    return bestSum_table(sum, inarr);
 }
 
 void printvec(const std::vector<int>& invec) {
@@ -62,14 +86,14 @@ void printvec(const std::vector<int>& invec) {
 }
 
 int main() {
-    printvec(bestSum(7, {5, 3, 4, 7}));
-    printvec(bestSum(8, {2, 3, 5}));
-    printvec(bestSum(8, {1, 4, 5}));
-    printvec(bestSum(100, {1, 2, 5, 25}));
+    printvec(bestSum(7, {5, 3, 4, 7}));  // 7
+    printvec(bestSum(8, {2, 3, 5}));  // 3 5
+    printvec(bestSum(8, {1, 4, 5}));  // 4 4
+    printvec(bestSum(100, {1, 2, 5, 25}));  // 25 25 25 25
     std::cout << "----------" << '\n';
-    printvec(bestSum(7, {2, 3}));
-    printvec(bestSum(7, {2, 4}));
-    printvec(bestSum(300, {7, 15}));
-    printvec(bestSum(0, {0, 7, 15}));
+    printvec(bestSum(7, {2, 3}));  // 2 2 3
+    printvec(bestSum(7, {2, 4}));  // empty
+    printvec(bestSum(300, {7, 15}));  // 15 * 20
+    printvec(bestSum(0, {0, 7, 15}));  // 0
     return 0;
 }

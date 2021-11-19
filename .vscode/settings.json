@@ -45,6 +45,11 @@
         "bitset": "cpp",
         "unordered_set": "cpp",
         "map": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "random": "cpp",
+        "chrono": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp",
+        "set": "cpp"
     }
 }

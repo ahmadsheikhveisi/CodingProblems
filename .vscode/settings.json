@@ -50,7 +50,15 @@
         "chrono": "cpp",
         "ctime": "cpp",
         "ratio": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "any": "cpp",
+        "condition_variable": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

@@ -1,0 +1,15 @@
+
+#ifndef DESIGNPATTERNS_CREATIONALPATTERNS_SINGLETON_ZEROHANDLE_HPP_
+#define DESIGNPATTERNS_CREATIONALPATTERNS_SINGLETON_ZEROHANDLE_HPP_
+
+
+class ZeroHandle {
+ public:
+    static int& getVal();
+ private:
+    static int m_val;
+    ZeroHandle() = delete;
+};
+
+
+#endif  // DESIGNPATTERNS_CREATIONALPATTERNS_SINGLETON_ZEROHANDLE_HPP_

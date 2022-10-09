@@ -14,6 +14,8 @@ class Component {
     }
 };
 
+// if concreteComponent adds more functionality,
+// decorator doesn't have any idea.
 class ConcretComponent : public Component {
  public:
     std::string Operation() const override {
@@ -29,9 +31,15 @@ class Decorator : public Component {
         return m_component->Operation();
     }
  protected:
-    std::shared_ptr<Component> m_component;
+    std::shared_ptr<Component> m_component;  // Aggregation.
+    // the original object must be kept around
+    // decorator doesn't take ownership of the component.
 };
 
+// Decorator doesn't know anything about concreate component.
+// it is a fundamental C++ limitation; it does not handle
+// cross-casting well (casting to a type in another branch of the
+// same hierarchy)
 class ConcreteDecoratorA : public Decorator {
  public:
     explicit ConcreteDecoratorA(std::shared_ptr<Component> component) :

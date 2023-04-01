@@ -11,10 +11,10 @@
 void permutation(std::string prefix, std::string str,
                 std::unordered_set<std::string> *mset) {
     if (str.size() == 0) {
-        if (mset->find(prefix) == mset->end()) {
+        //  if (mset->find(prefix) == mset->end()) {
             std::cout << "out " << prefix << '\n';
             mset->insert(prefix);
-        }
+        //  }
     } else {
         // std::cout << '\n';
         // std::cout << "prefix " << prefix << " str " << str << '\n';
@@ -39,6 +39,6 @@ void permutation(std::string str) {
 
 
 int main(void) {
-    permutation("1114");
+    permutation("123");
     return 0;
 }

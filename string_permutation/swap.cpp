@@ -35,8 +35,12 @@ void permutation(std::string& str, size_t const left, size_t const right,
 }
 
 int main() {
-    std::string str{"ABBB"};
+    //  std::string str{"ABABCABC"};
+    //  std::string str{"ABAB"};
+    std::string str{"AABCDE"};  //  this fails!!!1111
+    std::sort(str.begin(), str.end());
     std::unordered_set<std::string> mset;
     permutation(str, 0 , str.size() - 1, mset);
+    std::cout << mset.size() << '\n';
     return 0;
 }

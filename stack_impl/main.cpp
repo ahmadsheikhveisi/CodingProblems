@@ -40,7 +40,13 @@ class mtype {
     const std::string & print() const {
         return name;
     }
+    friend std::ostream& operator<<(std::ostream& stream, mtype const& val);
 };
+
+std::ostream& operator<<(std::ostream& stream, mtype const& val) {
+    stream << val.name;
+    return stream;
+}
 
 int main() {
     stack_impl::stack<mtype> msck;
@@ -64,13 +70,13 @@ int main() {
     msck.pop();
     std::cout << msck.size() << '\n';*/
 
-    std::vector<mtype> vec;
+    /*std::vector<mtype> vec;
     {
         mtype const data1{"Temp"};
         std::cout << "Created\n";
         vec.emplace_back(std::move(data1));
         std::cout << "Pushed\n";
     }
-    std::cout << vec.back().name << '\n';
+    std::cout << vec.back().name << '\n';*/
     return 0;
 }

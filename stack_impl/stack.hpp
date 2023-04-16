@@ -19,14 +19,14 @@ class stack {
         T data;
         std::shared_ptr<Node> next{nullptr};
         explicit Node(T&& t_data): data(std::move(t_data)) {
-            std::cout << "Creating data from: " << t_data.print();
+            std::cout << "Creating data from: " << t_data;
             // data = std::move(t_data);
-            std::cout << " To:" << data.print() << '\n';
+            std::cout << " To:" << data << '\n';
         }
         explicit Node(const T& t_data): data(std::move(t_data)) {
-            std::cout << "Copying data from: " << t_data.print();
+            std::cout << "Copying data from: " << t_data;
             // data = std::move(t_data);
-            std::cout << " To:" << data.print() << '\n';
+            std::cout << " To:" << data << '\n';
         }
     };
     size_t size_;
@@ -43,17 +43,11 @@ class stack {
 
  public:
     stack() : size_(0), top_{nullptr} {}
-    void push(T&& val) {
-        std::cout << "Forwarding: " << val.print() << '\n';
-        auto ptr = std::make_shared<Node>(std::forward<T>(val));
-        std::cout << "Setting top: " << ptr->data.print() << '\n';
-        set_top(ptr);
-        ++size_;
-    }
-    void push(const T& val) {
-        std::cout << "Copying: " << val.print() << '\n';
-        auto ptr = std::make_shared<Node>(val);
-        std::cout << "Setting top: " << ptr->data.print() << '\n';
+    template<typename U>
+    void push(U&& val) {
+        std::cout << "Forwarding: " << val << '\n';
+        auto ptr = std::make_shared<Node>(std::forward<U>(val));
+        std::cout << "Setting top: " << ptr->data << '\n';
         set_top(ptr);
         ++size_;
     }

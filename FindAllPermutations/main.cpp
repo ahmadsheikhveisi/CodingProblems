@@ -29,13 +29,6 @@ std::vector<size_t> Solution(std::string const& s, std::string const& b) {
     }
     size_t window_len{0};
     for (size_t cnt{0}; cnt < b.size(); ++cnt) {
-        if (s_map.find(b[cnt]) == s_map.end()) {
-            // clean up the sliding map and continue
-            sliding_map.clear();
-            window_len = 0;
-            sliding_hash = 0;
-            continue;
-        }
         ++sliding_map[b[cnt]];
         ++window_len;
         if (window_len > s.size()) {
@@ -46,6 +39,10 @@ std::vector<size_t> Solution(std::string const& s, std::string const& b) {
                 sliding_hash &= remove_mask;
             }
             --window_len;
+        }
+        if (s_map.find(b[cnt]) == s_map.end()) {
+            // clean up the sliding map and continue
+            continue;
         }
         if (sliding_map[b[cnt]] >= s_map[b[cnt]]) {
             sliding_hash |= get_mask(b[cnt]);

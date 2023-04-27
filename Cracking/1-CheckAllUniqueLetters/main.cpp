@@ -1,4 +1,10 @@
 /* COPYRIGHT
+ * Check if a given string has only unique charactors
+ *
+ * Note std::decay_t<decltype(str[0])>
+ * str[0]: is of type const char&
+ * to convert this to a type that can be used for a map
+ * we need to use dacay_t
  */
 
 #include <algorithm>

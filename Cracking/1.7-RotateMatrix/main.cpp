@@ -15,6 +15,9 @@
  * string find returns the index and it can be npos
  *
  * Mind the end of string, when searching.
+ *
+ * A 90 degree rotation over the center, can be created by a mirror over
+ * diag and a mirror over vertical axis
  */
 
 #include <algorithm>

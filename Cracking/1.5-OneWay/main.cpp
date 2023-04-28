@@ -72,8 +72,8 @@ bool OneWayCheckOpt(std::string_view str1, std::string_view str2) {
   std::string_view smaller{str1.size() > str2.size() ? str2 : str1};
   std::string_view bigger{str1.size() > str2.size() ? str1 : str2};
   size_t bigger_cnt{0};
-  for (size_t cnt{0}; cnt < smaller.size(); ++cnt) {
-    if (smaller[cnt] != bigger[bigger_cnt]) {
+  for (auto chr : smaller) {
+    if (chr != bigger[bigger_cnt]) {
       if (diff) {
         return false;
       }
@@ -90,11 +90,8 @@ bool OneWayCheckOpt(std::string_view str1, std::string_view str2) {
 
 int main() {
   std::vector<std::tuple<std::string_view, std::string_view>> testlist{
-      {"pale", "ple"},
-      {"pales", "pale"},
-      {"pale", "bale"},
-      {"pale", "bake"},
-      {"pales", "bale"}};
+      {"pale", "ple"},  {"pales", "pale"}, {"pale", "bale"},
+      {"pale", "bake"}, {"pales", "bale"}, {"apple", "aple"}};
   for (auto &mem : testlist) {
     auto [str1, str2] = mem;
     std::cout << str1 << ' ' << str2 << ' ' << OneWayCheckHash(str1, str2)

@@ -36,7 +36,7 @@ bool PalindromePermutationHash(std::string_view str) {
       continue;
     }
     if ((chr >= 'A') && (chr <= 'Z')) {
-      chr = 'a' + (chr - 'A');
+      chr = static_cast<char>('a' + (chr - 'A'));
     }
     ++hash[chr];
   }
@@ -54,7 +54,7 @@ bool PalindromePermutationHashOpt(std::string_view str) {
       continue;
     }
     if ((chr >= 'A') && (chr <= 'Z')) {
-      chr = 'a' + (chr - 'A');
+      chr = static_cast<char>('a' + (chr - 'A'));
     }
     ++hash[chr];
     if ((hash[chr] % 2) == 1) {
@@ -71,7 +71,7 @@ bool PalindromePermutationBitVector(std::string_view str) {
   std::vector<bool> hash(26, false);
   for (auto chr : str) {
     if ((chr >= 'A') && (chr <= 'Z')) {
-      chr = 'a' + (chr - 'A');
+      chr = static_cast<char>('a' + (chr - 'A'));
     }
     if ((chr < 'a') || (chr > 'z')) {
       continue;
@@ -93,7 +93,7 @@ std::uint32_t createBitVector(std::string_view str) {
   std::uint32_t hash{0};
   for (auto chr : str) {
     if ((chr >= 'A') && (chr <= 'Z')) {
-      chr = 'a' + (chr - 'A');
+      chr = static_cast<char>('a' + (chr - 'A'));
     }
     if ((chr < 'a') || (chr > 'z')) {
       continue;

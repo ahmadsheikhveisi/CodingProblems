@@ -17,6 +17,7 @@ class LinkedList {
     std::shared_ptr<Node> next{nullptr};
     explicit Node(T&& t_data) : data(std::move(t_data)) {}
     explicit Node(T const& t_data) : data(t_data) {}
+    // ~Node() { std::cout << "des: " << data << '\n'; }
   };
 
   LinkedList() : front(nullptr) {}
@@ -43,6 +44,7 @@ class LinkedList {
       prev->next = node;
       node->next = pos;
     }
+    ++_size;
     return node;
   }
   friend std::ostream& operator<<(std::ostream& ostrm, LinkedList const& lst) {
@@ -78,7 +80,11 @@ class LinkedList {
 
   std::shared_ptr<Node> front{nullptr};
 
+  size_t size() const { return _size; }
+
  private:
+  size_t _size{0};
+
   std::shared_ptr<Node> rec_rev(std::shared_ptr<Node> node) {
     if (node == nullptr) {
       return nullptr;

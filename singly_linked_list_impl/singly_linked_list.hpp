@@ -25,8 +25,7 @@ class LinkedList {
   LinkedList(std::initializer_list<T> lst) : front(nullptr) {
     auto ptr = front;
     for (auto&& mem : lst) {
-      ptr = insert(ptr, mem);
-      ptr = ptr->next;
+      ptr = insert_after(ptr, mem);
     }
   }
 
@@ -47,6 +46,20 @@ class LinkedList {
     ++_size;
     return node;
   }
+
+  template <typename U>
+  std::shared_ptr<Node> insert_after(std::shared_ptr<Node> pos, U&& data) {
+    auto node = std::make_shared<Node>(std::forward<U>(data));
+    if (pos == nullptr) {
+      front = node;
+    } else {
+      node->next = pos->next;
+      pos->next = node;
+    }
+    ++_size;
+    return node;
+  }
+
   friend std::ostream& operator<<(std::ostream& ostrm, LinkedList const& lst) {
     auto node{lst.front};
     while (node != nullptr) {

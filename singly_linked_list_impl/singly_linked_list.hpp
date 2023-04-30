@@ -60,6 +60,18 @@ class LinkedList {
     return node;
   }
 
+  std::shared_ptr<Node> insert_after(std::shared_ptr<Node> pos,
+                                     std::shared_ptr<Node> node) {
+    if (pos == nullptr) {
+      front = node;
+    } else {
+      node->next = pos->next;
+      pos->next = node;
+    }
+    ++_size;
+    return node;
+  }
+
   friend std::ostream& operator<<(std::ostream& ostrm, LinkedList const& lst) {
     auto node{lst.front};
     while (node != nullptr) {

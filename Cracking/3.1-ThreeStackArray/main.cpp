@@ -1,11 +1,6 @@
 /* COPYRIGHT
- * Given a circular linked list, implement an algorithm that returns the node at
- * the beginning of the loop. a Circular linked list is a (corrupt) linked list
- * in whicha node's next pointer points to an ealier node, so s to make a loop
- * in the linked list.
+ * Describe how you could use a single array to implement three stacks.
  *
- * Input: A->B->C->D->E->C
- * Output: C
  *
  * Note: case insensive, ignore white space, ASCII, UTF8
  * Palindrome has an even occurance of all charactors, except
@@ -161,6 +156,7 @@ int main() {
   mstk.push(7,1);
   mstk.push(8,1);
   mstk.push(9,1);
+  mstk.push(9,2);
   std::cout << "full " << mstk << '\n';
   mstk.print(0);
   mstk.print(1);

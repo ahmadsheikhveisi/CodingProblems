@@ -132,7 +132,8 @@ class minstack {
     return mins.top();
   }
   friend std::ostream& operator<<(std::ostream& ostm,  minstack& val) {
-    ostm << val.min();
+    ostm << "data " << val.data << '\n';
+    ostm << "min " << val.mins;
     return ostm;
   }
 };

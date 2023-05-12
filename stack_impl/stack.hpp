@@ -19,14 +19,14 @@ class stack {
         T data;
         std::shared_ptr<Node> next{nullptr};
         explicit Node(T&& t_data): data(std::move(t_data)) {
-            std::cout << "Creating data from: " << t_data;
+            // std::cout << "Creating data from: " << t_data;
             // data = std::move(t_data);
-            std::cout << " To:" << data << '\n';
+            // std::cout << " To:" << data << '\n';
         }
         explicit Node(const T& t_data): data(std::move(t_data)) {
-            std::cout << "Copying data from: " << t_data;
+            // std::cout << "Copying data from: " << t_data;
             // data = std::move(t_data);
-            std::cout << " To:" << data << '\n';
+            // std::cout << " To:" << data << '\n';
         }
     };
     size_t size_;
@@ -45,9 +45,9 @@ class stack {
     stack() : size_(0), top_{nullptr} {}
     template<typename U>
     void push(U&& val) {
-        std::cout << "Forwarding: " << val << '\n';
+        // std::cout << "Forwarding: " << val << '\n';
         auto ptr = std::make_shared<Node>(std::forward<U>(val));
-        std::cout << "Setting top: " << ptr->data << '\n';
+        // std::cout << "Setting top: " << ptr->data << '\n';
         set_top(ptr);
         ++size_;
     }
@@ -63,6 +63,14 @@ class stack {
     }
     size_t size() {
         return size_;
+    }
+    friend std::ostream& operator<<(std::ostream& ostrm, stack& val) {
+        auto ptr = val.top_;
+        while (ptr != nullptr) {
+            ostrm << ptr->data << ' ';
+            ptr = ptr->next;
+        }
+        return ostrm;
     }
 };
 }  // namespace stack_impl

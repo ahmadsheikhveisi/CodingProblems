@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.15)
 
-project (ThreeStackOneArray)
+project (ThreeStck1Arry)
 
 add_executable(${PROJECT_NAME} main.cpp)
 

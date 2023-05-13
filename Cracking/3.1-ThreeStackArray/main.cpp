@@ -25,7 +25,7 @@
  * inlining the ostream& operator<<(ostream& out, classtemplate) is the best
  * way.
  *
- * structured binding auto [a, b] = std::tuple
+ * structured binding auto [a, b) = std::tuple
  * to use current variables: std::tie(a,b, _) = std::tuple
  *
  * in linked lists, if you can use the size, you can acheive O(1) space
@@ -36,6 +36,7 @@
 #include <algorithm>
 #include <iostream>
 #include <list>
+#include <memory>
 #include <sstream>
 #include <string_view>
 #include <tuple>
@@ -43,38 +44,39 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <memory>
 
 #include "stack.hpp"
 
-template<typename T, size_t StackNum = 3, size_t StackSize = 10>
+static constexpr size_t stack_size_default{10};
+static constexpr size_t number_of_stacks_default{3};
+template <typename T, size_t StackNum = number_of_stacks_default,
+          size_t StackSize = stack_size_default>
 class mtype {
   class Node {
    public:
     T data;
-    Node* next{nullptr};
-    Node() : data(T{}) {};
-    explicit Node(T&& t_data): data(std::move(t_data)) {}
-    explicit Node(const T& t_data) : data(t_data) {}
+    Node *next{nullptr};
+    Node() : data(T{}) {}
+    explicit Node(T &&t_data) : data(std::move(t_data)) {}
+    explicit Node(const T &t_data) : data(t_data) {}
   };
   std::array<Node, StackSize> arr;
-  std::array<Node*, StackNum> topN;
-  Node* empty_top{nullptr};
+  std::array<Node *, StackNum> topN;
+  Node *empty_top{nullptr};
+
  public:
- mtype() {
-  for (size_t cnt{0}; cnt < StackSize - 1; ++cnt) {
-    arr[cnt].next = &arr[cnt + 1];
+  mtype() {
+    for (size_t cnt{0}; cnt < StackSize - 1; ++cnt) {
+      arr.at(cnt).next = &arr.at(cnt + 1);
+    }
+    for (size_t cnt{0}; cnt < StackNum; ++cnt) {
+      topN.at(cnt) = nullptr;
+    }
+    empty_top = &arr.at(0);
   }
-  for (size_t cnt{0}; cnt < StackNum - 1; ++cnt) {
-    topN[cnt] = nullptr;
-  }
-  empty_top = &arr[0];
- }
-  T& top(size_t stack_idx) {
-    return topN.at(stack_idx)->data;
-  }
-  template<typename U>
-  bool push(U&& val, size_t stack_idx) {
+  T &top(size_t stack_idx) { return topN.at(stack_idx)->data; }
+  template <typename U>
+  bool push(U &&val, size_t stack_idx) {
     if (stack_idx > StackNum - 1) {
       return false;
     }
@@ -83,12 +85,12 @@ class mtype {
     }
     empty_top->data = std::forward<U>(val);
     auto next_empty = empty_top->next;
-    if (topN[stack_idx] == nullptr) {
-      topN[stack_idx] = empty_top;
-      topN[stack_idx]->next = nullptr;
+    if (topN.at(stack_idx) == nullptr) {
+      topN.at(stack_idx) = empty_top;
+      topN.at(stack_idx)->next = nullptr;
     } else {
-      empty_top->next = topN[stack_idx];
-      topN[stack_idx] = empty_top;
+      empty_top->next = topN.at(stack_idx);
+      topN.at(stack_idx) = empty_top;
     }
     empty_top = next_empty;
     return true;
@@ -98,26 +100,26 @@ class mtype {
     if (stack_idx > StackNum - 1) {
       return;
     }
-    if (topN[stack_idx] == nullptr) {
+    if (topN.at(stack_idx) == nullptr) {
       return;
     }
-    auto next_top = topN[stack_idx]->next;
+    auto next_top = topN.at(stack_idx)->next;
     if (empty_top != nullptr) {
-      topN[stack_idx]->next = empty_top;
-      empty_top = topN[stack_idx];
-      
+      topN.at(stack_idx)->next = empty_top;
+      empty_top = topN.at(stack_idx);
+
     } else {
-      empty_top = topN[stack_idx];
+      empty_top = topN.at(stack_idx);
       empty_top->next = nullptr;
     }
-    topN[stack_idx] = next_top;
+    topN.at(stack_idx) = next_top;
   }
 
   void print(size_t stack_idx) {
     if (stack_idx > StackNum - 1) {
       return;
     }
-    auto ptr = topN[stack_idx];
+    auto ptr = topN.at(stack_idx);
     while (ptr) {
       std::cout << ptr->data << ' ';
       ptr = ptr->next;
@@ -125,8 +127,8 @@ class mtype {
     std::cout << '\n';
   }
 
-  friend std::ostream& operator<<(std::ostream& ostm, const mtype& val) {
-    for (auto const& mem : val.arr) {
+  friend std::ostream &operator<<(std::ostream &ostm, const mtype &val) {
+    for (auto const &mem : val.arr) {
       std::cout << mem.data << ' ';
     }
     return ostm;
@@ -135,28 +137,22 @@ class mtype {
 
 int main() {
   mtype<int> mstk;
-  mstk.push(13,0);
-  mstk.push(14,0);
-  mstk.push(15,0);
-  mstk.push(16,0);
-  mstk.push(17,0);
-  mstk.push(18,0);
-  mstk.push(19,0);
-  mstk.push(20,0);
-  mstk.push(21,0);
-  mstk.push(22,0);
-  mstk.push(23,0);
-  mstk.push(24,0);
+  std::vector<int> const data0{13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
+  for (auto num : data0) {
+    mstk.push(num, 0);
+  }
   std::cout << "full " << mstk << '\n';
   mstk.print(0);
   mstk.pop(0);
   mstk.print(0);
   mstk.pop(0);
   mstk.print(0);
-  mstk.push(7,1);
-  mstk.push(8,1);
-  mstk.push(9,1);
-  mstk.push(9,2);
+  std::vector<int> const data1{7, 8, 9, 9};
+  for (auto num : data1) {
+    mstk.push(num, 1);
+  }
+
+  mstk.push(data1.back(), 2);
   std::cout << "full " << mstk << '\n';
   mstk.print(0);
   mstk.print(1);

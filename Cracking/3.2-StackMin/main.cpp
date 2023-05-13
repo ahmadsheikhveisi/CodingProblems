@@ -2,7 +2,7 @@
  * How would you design a stack which, in addition to push and pop
  * has a function min which returns the minimum element? push, pop
  * and min should all operate in O(1) time.
- * 
+ *
  * we can have a second stack!
  *
  *
@@ -35,11 +35,23 @@
  * in linked lists, if you can use the size, you can acheive O(1) space
  * complexity. otherwise, recursion gives O(N) space complexity. don't forget
  * the runner approach.
+ *
+ * to get the coredumps first add "* - core unlimited" to
+ * /etc/security/limits.conf
+ * change /proc/sys/kernel/core_pattern. | at the
+ * begining means core dump is directed to stdout
+ * sudo su
+ * echo "/var/crash/core-%e-%p-%t" > /proc/sys/kernel/core_pattern
+ * or premanently under /etc/sysctl.conf
+ * kernel.core_pattern=/tmp/cores/core.%e.%p.%h.%t
+ * remember %e truncates the filename to 15 chars
+ * then you need a proper launch config
  */
 
 #include <algorithm>
 #include <iostream>
 #include <list>
+#include <memory>
 #include <sstream>
 #include <string_view>
 #include <tuple>
@@ -47,33 +59,29 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <memory>
 
 #include "stack.hpp"
 
-template<typename T>
+template <typename T>
 class mtype {
   class Node {
    public:
     T data;
     std::shared_ptr<Node> next{nullptr};
     std::shared_ptr<Node> last_min{nullptr};
-    Node() : data(T{}) {};
-    explicit Node(T&& t_data): data(std::move(t_data)) {}
-    explicit Node(const T& t_data) : data(t_data) {}
+    Node() : data(T{}) {}
+    explicit Node(T &&t_data) : data(std::move(t_data)) {}
+    explicit Node(const T &t_data) : data(t_data) {}
   };
   std::shared_ptr<Node> stack_top{nullptr};
- public:
- mtype(): stack_top{nullptr} {}
 
-  T& top() {
-    return stack_top->data;
-  }
-  T& min() {
-    return stack_top->last_min->data;
-  }
-  template<typename U>
-  void push(U&& val) {
+ public:
+  mtype() : stack_top{nullptr} {}
+
+  T &top() { return stack_top->data; }
+  T &min() { return stack_top->last_min->data; }
+  template <typename U>
+  void push(U &&val) {
     auto ptr = std::make_shared<Node>(std::forward<U>(val));
     if (stack_top == nullptr) {
       stack_top = ptr;
@@ -95,7 +103,7 @@ class mtype {
     }
   }
 
-  friend std::ostream& operator<<(std::ostream& ostm, const mtype& val) {
+  friend std::ostream &operator<<(std::ostream &ostm, const mtype &val) {
     auto ptr = val.stack_top;
     while (ptr != nullptr) {
       std::cout << ptr->data << ' ';
@@ -105,14 +113,15 @@ class mtype {
   }
 };
 
-template<typename T>
+template <typename T>
 class minstack {
  private:
   stack_impl::stack<T> data;
   stack_impl::stack<T> mins;
+
  public:
-  template<typename U>
-  void push(U&& val){
+  template <typename U>
+  void push(U &&val) {
     data.push(std::forward<U>(val));
     if (mins.size() != 0) {
       if (data.top() <= mins.top()) {
@@ -128,10 +137,8 @@ class minstack {
     }
     data.pop();
   }
-  T& min() {
-    return mins.top();
-  }
-  friend std::ostream& operator<<(std::ostream& ostm,  minstack& val) {
+  T &min() { return mins.top(); }
+  friend std::ostream &operator<<(std::ostream &ostm, minstack &val) {
     ostm << "data " << val.data << '\n';
     ostm << "min " << val.mins;
     return ostm;
@@ -140,20 +147,22 @@ class minstack {
 
 int main() {
   minstack<int> mstk;
-  mstk.push(13);
-  mstk.push(14);
-  mstk.push(1);
-  mstk.push(16);
+  std::vector<int> data0{13, 14, 1, 16};
+  for (auto num : data0) {
+    mstk.push(num);
+  }
+
   std::cout << mstk << '\n';
   std::cout << mstk.min() << '\n';
   mstk.pop();
   mstk.pop();
   mstk.pop();
   std::cout << mstk.min() << '\n';
-  mstk.push(9);
-  mstk.push(8);
-  mstk.push(8);
-  mstk.push(7);
+
+  std::vector<int> data1{9, 8, 8, 7};
+  for (auto num : data1) {
+    mstk.push(num);
+  }
   mstk.pop();
   std::cout << "full " << mstk << '\n';
   std::cout << mstk.min() << '\n';

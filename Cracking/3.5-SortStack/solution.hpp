@@ -12,32 +12,37 @@
 #include "stack.hpp"
 
 template <typename T>
-class MyQueue {
+class SortedStack {
  private:
-  stack_impl::stack<T> push_stack;
-  stack_impl::stack<T> pop_stack;
+  stack_impl::stack<T> sorted_stack;
 
  public:
   template <typename U>
   void push(U&& val) {
-    push_stack.push(std::forward<U>(val));
+    if (sorted_stack.size() == 0) {
+      sorted_stack.push(std::forward<U>(val));
+      return;
+    }
+    stack_impl::stack<T> temp_stack;
+    while ((sorted_stack.size() != 0) && (val > sorted_stack.top())) {
+      temp_stack.push(sorted_stack.top());
+      sorted_stack.pop();
+    }
+    sorted_stack.push(std::forward<U>(val));
+    while (temp_stack.size() != 0) {
+      sorted_stack.push(temp_stack.top());
+      temp_stack.pop();
+    }
   }
 
   T pop() {
-    if (pop_stack.size() == 0) {
-      while (push_stack.size() != 0) {
-        pop_stack.push(push_stack.top());
-        push_stack.pop();
-      }
-    }
-
-    auto ret = pop_stack.top();
-    pop_stack.pop();
+    auto ret = sorted_stack.top();
+    sorted_stack.pop();
     return ret;
   }
 
-  friend std::ostream& operator<<(std::ostream& ostm, MyQueue& val) {
-    ostm << "push " << val.push_stack << "\npop " << val.pop_stack;
+  friend std::ostream& operator<<(std::ostream& ostm, SortedStack& val) {
+    ostm << "all " << val.sorted_stack;
     return ostm;
   }
 };

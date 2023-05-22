@@ -63,7 +63,7 @@
 #include "stack.hpp"
 
 int main() {
-  MyQueue<int> mque;
+  SortedStack<int> mque;
   mque.push(0);
   mque.push(1);
   mque.push(2);
@@ -72,8 +72,11 @@ int main() {
   std::cout << "poped " << mque.pop() << '\n';
   std::cout << mque << '\n';
   std::cout << "----\n";
-  mque.push(3);
+  mque.push(5);
   std::cout << "poped " << mque.pop() << '\n';
+  std::cout << mque << '\n';
+  std::cout << "----\n";
+  mque.push(4);
   std::cout << mque << '\n';
   std::cout << "----\n";
   return 0;

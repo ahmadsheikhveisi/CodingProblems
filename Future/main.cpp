@@ -13,6 +13,13 @@ class Worker {
  public:
   Worker() : mutex_{}, ready{false}, temp_async{} {}
 
+  ~Worker() { temp_async.get(); }
+
+  Worker(Worker const&) = default;
+  Worker(Worker&&) = default;
+  Worker& operator=(Worker const&) = default;
+  Worker& operator=(Worker&&) = default;
+
   void Start() {
     temp_async = std::async(std::launch::async, [&]() { background_worker(); });
   }

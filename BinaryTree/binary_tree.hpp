@@ -65,28 +65,28 @@ class BinaryTree {
       return false;
     }
     if (node.left_ != nullptr) {
-      if (!PreOrderSearch(*node.left_, operation)){
+      if (!PreOrderSearch(*node.left_, operation)) {
         return false;
       }
     }
-    if (node.right_ !=  nullptr){
+    if (node.right_ != nullptr) {
       if (!PreOrderSearch(*node.right_, operation)) {
         return false;
       }
     }
     return true;
   }
-
+  // most common
   bool InOrderSearch(Node const& node, Visit const& operation) {
     if (node.left_ != nullptr) {
-      if (!InOrderSearch(*node.left_, operation)){
+      if (!InOrderSearch(*node.left_, operation)) {
         return false;
       }
     }
     if (!operation(node)) {
       return false;
     }
-    if (node.right_ !=  nullptr){
+    if (node.right_ != nullptr) {
       if (!InOrderSearch(*node.right_, operation)) {
         return false;
       }
@@ -96,11 +96,11 @@ class BinaryTree {
 
   bool PostOrderSearch(Node const& node, Visit const& operation) {
     if (node.left_ != nullptr) {
-      if (!PostOrderSearch(*node.left_, operation)){
+      if (!PostOrderSearch(*node.left_, operation)) {
         return false;
       }
     }
-    if (node.right_ !=  nullptr){
+    if (node.right_ != nullptr) {
       if (!PostOrderSearch(*node.right_, operation)) {
         return false;
       }
@@ -109,6 +109,27 @@ class BinaryTree {
       return false;
     }
     return true;
+  }
+
+  bool IsBinarySearchTree() {
+    // all left desendents <= n < all right desendents
+    return false;
+  }
+
+  bool IsBalancedBinaryTree() {
+    // red-black and AVL
+    return false;
+  }
+
+  bool IsFullBinaryTree() {
+    // A full binary tree in which every node has either zero or
+    // two children. no node with only one child.
+    return false;
+  }
+
+  bool IsPerfectBinaryTree() {
+    // A perfect binary tree, is both full and complete.
+    return false;
   }
 
  private:

@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include <iostream>
 #include <string_view>  // NOLINT
 
 #include "binary_tree.hpp"
@@ -39,4 +40,23 @@ TEST(BinaryTreeAddNode, AddNodeTest) {
 
   EXPECT_EQ(uut.root_.left_->value_, 1);
   EXPECT_EQ(uut.root_.right_->value_, 2);
+
+  uut.root_.left_->SetLeft(3);
+  uut.root_.right_->SetRight(4);
+
+  uut.BreadthFirstSearch(uut.root_,
+    [](BinaryTree<int>::Node const& node){
+      std::cout << node.value_ << '\n'; return true;});
+  std::cout << "====\n";
+  uut.InOrderSearch(uut.root_,
+    [](BinaryTree<int>::Node const& node){
+      std::cout << node.value_ << '\n'; return true;});
+  std::cout << "====\n";
+  uut.PreOrderSearch(uut.root_,
+    [](BinaryTree<int>::Node const& node){
+      std::cout << node.value_ << '\n'; return true;});
+  std::cout << "====\n";
+  uut.PostOrderSearch(uut.root_,
+    [](BinaryTree<int>::Node const& node){
+      std::cout << node.value_ << '\n'; return true;});
 }

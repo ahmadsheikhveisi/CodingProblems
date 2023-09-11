@@ -48,7 +48,67 @@ class BinaryTree {
     while (!qu.empty()) {
       auto nd = qu.front();
       qu.pop();
+      if (!operation(nd)) {
+        return;
+      }
+      if (nd.get().left_ != nullptr) {
+        qu.push(*nd.get().left_);
+      }
+      if (nd.get().right_ != nullptr) {
+        qu.push(*nd.get().right_);
+      }
     }
+  }
+
+  bool PreOrderSearch(Node const& node, Visit const& operation) {
+    if (!operation(node)) {
+      return false;
+    }
+    if (node.left_ != nullptr) {
+      if (!PreOrderSearch(*node.left_, operation)){
+        return false;
+      }
+    }
+    if (node.right_ !=  nullptr){
+      if (!PreOrderSearch(*node.right_, operation)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool InOrderSearch(Node const& node, Visit const& operation) {
+    if (node.left_ != nullptr) {
+      if (!InOrderSearch(*node.left_, operation)){
+        return false;
+      }
+    }
+    if (!operation(node)) {
+      return false;
+    }
+    if (node.right_ !=  nullptr){
+      if (!InOrderSearch(*node.right_, operation)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool PostOrderSearch(Node const& node, Visit const& operation) {
+    if (node.left_ != nullptr) {
+      if (!PostOrderSearch(*node.left_, operation)){
+        return false;
+      }
+    }
+    if (node.right_ !=  nullptr){
+      if (!PostOrderSearch(*node.right_, operation)) {
+        return false;
+      }
+    }
+    if (!operation(node)) {
+      return false;
+    }
+    return true;
   }
 
  private:

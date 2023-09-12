@@ -110,6 +110,13 @@ class BinaryTree {
     }
     return true;
   }
+  // https://www.geeksforgeeks.org/types-of-binary-tree/
+  bool IsCompleteBinaryTree() {
+    // All levels are completely filled except
+    // the last level and the last level has the left children
+    // a complete binary tree doesn’t have to be a full binary tree.
+    return false;
+  }
 
   bool IsBinarySearchTree() {
     // all left desendents <= n < all right desendents
@@ -117,7 +124,8 @@ class BinaryTree {
   }
 
   bool IsBalancedBinaryTree() {
-    // red-black and AVL
+    // the height of balaced tree is O(Log n) n:the number of nodes.
+    // 
     return false;
   }
 
@@ -129,6 +137,23 @@ class BinaryTree {
 
   bool IsPerfectBinaryTree() {
     // A perfect binary tree, is both full and complete.
+    // In a Perfect Binary Tree, the number of leaf nodes
+    // is the number of internal nodes plus 1.
+    // A perfect binary tree has  2^(h+1) + 1 nodes. h is the hight.
+    // 
+    return false;
+  }
+
+  bool IsDegenrateTree(){
+    // every node has only one child. like a list
+    // also called pathological
+    return false;
+  }
+
+  bool IsSkewedTree() {
+    // tree is dominated by left nodes or right nodes.
+    // there are two types of skewed binary trees:
+    // left binary trees and right binary trees.
     return false;
   }
 

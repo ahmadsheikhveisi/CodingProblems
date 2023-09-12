@@ -36,14 +36,15 @@ class BinaryTree {
     T value_;
   };
 
-  explicit BinaryTree(T const& value) : root_{value} {}
-  explicit BinaryTree(T&& value) : root_{std::move(value)} {}
-  Node root_;
+  explicit BinaryTree(T const& value) : root_{std::make_shared(value)} {}
+  explicit BinaryTree(T&& value)
+      : root_{std::make_shared<Node>(std::move(value))} {}
+  std::shared_ptr<Node> root_{};
 
-  using Visit = std::function<bool(Node const&)>;
+  using Visit = std::function<bool(std::shared_ptr<Node>)>;
   // https://www.geeksforgeeks.org/introduction-to-binary-tree-data-structure-and-algorithm-tutorials/
-  void BreadthFirstSearch(Node const& node, Visit const& operation) {
-    std::queue<std::reference_wrapper<Node const>> qu;
+  void BreadthFirstSearch(std::shared_ptr<Node> node, Visit const& operation) {
+    std::queue<std::shared_ptr<Node>> qu;
     qu.push(node);
     while (!qu.empty()) {
       auto nd = qu.front();
@@ -51,57 +52,57 @@ class BinaryTree {
       if (!operation(nd)) {
         return;
       }
-      if (nd.get().left_ != nullptr) {
-        qu.push(*nd.get().left_);
+      if (nd->left_ != nullptr) {
+        qu.push(nd->left_);
       }
-      if (nd.get().right_ != nullptr) {
-        qu.push(*nd.get().right_);
+      if (nd->right_ != nullptr) {
+        qu.push(nd->right_);
       }
     }
   }
 
-  bool PreOrderSearch(Node const& node, Visit const& operation) {
+  bool PreOrderSearch(std::shared_ptr<Node> node, Visit const& operation) {
     if (!operation(node)) {
       return false;
     }
-    if (node.left_ != nullptr) {
-      if (!PreOrderSearch(*node.left_, operation)) {
+    if (node->left_ != nullptr) {
+      if (!PreOrderSearch(node->left_, operation)) {
         return false;
       }
     }
-    if (node.right_ != nullptr) {
-      if (!PreOrderSearch(*node.right_, operation)) {
+    if (node->right_ != nullptr) {
+      if (!PreOrderSearch(node->right_, operation)) {
         return false;
       }
     }
     return true;
   }
   // most common
-  bool InOrderSearch(Node const& node, Visit const& operation) {
-    if (node.left_ != nullptr) {
-      if (!InOrderSearch(*node.left_, operation)) {
+  bool InOrderSearch(std::shared_ptr<Node> node, Visit const& operation) {
+    if (node != nullptr) {
+      if (!InOrderSearch(node->left_, operation)) {
         return false;
       }
     }
     if (!operation(node)) {
       return false;
     }
-    if (node.right_ != nullptr) {
-      if (!InOrderSearch(*node.right_, operation)) {
+    if (node != nullptr) {
+      if (!InOrderSearch(node->right_, operation)) {
         return false;
       }
     }
     return true;
   }
 
-  bool PostOrderSearch(Node const& node, Visit const& operation) {
-    if (node.left_ != nullptr) {
-      if (!PostOrderSearch(*node.left_, operation)) {
+  bool PostOrderSearch(std::shared_ptr<Node> node, Visit const& operation) {
+    if (node != nullptr) {
+      if (!PostOrderSearch(node->left_, operation)) {
         return false;
       }
     }
-    if (node.right_ != nullptr) {
-      if (!PostOrderSearch(*node.right_, operation)) {
+    if (node != nullptr) {
+      if (!PostOrderSearch(node->right_, operation)) {
         return false;
       }
     }
@@ -115,7 +116,31 @@ class BinaryTree {
     // All levels are completely filled except
     // the last level and the last level has the left children
     // a complete binary tree doesn’t have to be a full binary tree.
-    return false;
+    // Using Breadth First Search, the last node is the queue is the
+    // last node. so if we get any node that is not full before that
+    // that tree is not complete.
+    bool non_full_node_seen{false};
+    bool ret{true};
+    BreadthFirstSearch(root_,
+                       [&non_full_node_seen, &ret](std::shared_ptr<Node> node) {
+                         if (node->left_ != nullptr) {
+                           if (non_full_node_seen) {
+                             ret = false;
+                           }
+                         } else {
+                           non_full_node_seen = true;
+                         }
+
+                         if (ret && (node->right_ != nullptr)) {
+                           if (non_full_node_seen) {
+                             ret = false;
+                           }
+                         } else {
+                           non_full_node_seen = true;
+                         }
+                         return ret;
+                       });
+    return ret;
   }
 
   bool IsBinarySearchTree() {
@@ -125,14 +150,20 @@ class BinaryTree {
 
   bool IsBalancedBinaryTree() {
     // the height of balaced tree is O(Log n) n:the number of nodes.
-    // 
+    //
     return false;
   }
 
   bool IsFullBinaryTree() {
     // A full binary tree in which every node has either zero or
     // two children. no node with only one child.
-    return false;
+    bool ret{true};
+    BreadthFirstSearch(root_, [&ret](std::shared_ptr<Node> node) {
+      ret = (node != nullptr) &&
+            ((node->left_ == nullptr) == (node->right_ == nullptr));
+      return ret;
+    });
+    return ret;
   }
 
   bool IsPerfectBinaryTree() {
@@ -140,11 +171,11 @@ class BinaryTree {
     // In a Perfect Binary Tree, the number of leaf nodes
     // is the number of internal nodes plus 1.
     // A perfect binary tree has  2^(h+1) + 1 nodes. h is the hight.
-    // 
+    //
     return false;
   }
 
-  bool IsDegenrateTree(){
+  bool IsDegenrateTree() {
     // every node has only one child. like a list
     // also called pathological
     return false;

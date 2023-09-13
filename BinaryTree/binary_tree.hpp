@@ -150,7 +150,16 @@ class BinaryTree {
 
   bool IsBalancedBinaryTree() {
     // the height of balaced tree is O(Log n) n:the number of nodes.
-    //
+    /**
+     * the AVL tree maintains O(Log n) height by making sure that the
+     * difference between the heights of the left and right subtrees
+     * is at most 1.
+     * Red-Black trees maintain O(Log n) height by making
+     * sure that the number of Black nodes on every root to leaf paths
+     * is the same and that there are no adjacent red nodes. Balanced
+     * Binary Search trees are performance-wise good as they provide
+     * O(log n) time for search, insert and delete.
+     */
     return false;
   }
 
@@ -172,7 +181,7 @@ class BinaryTree {
     // is the number of internal nodes plus 1.
     // A perfect binary tree has  2^(h+1) + 1 nodes. h is the hight.
     //
-    return false;
+    return IsCompleteBinaryTree() && IsFullBinaryTree();
   }
 
   bool IsDegenrateTree() {

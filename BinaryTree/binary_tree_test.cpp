@@ -89,3 +89,27 @@ TEST(BinaryTreeTest, CompeleteBinaryTreeTest) {
   EXPECT_FALSE(uut.IsCompleteBinaryTree());
   EXPECT_FALSE(uut.IsFullBinaryTree());
 }
+
+TEST(BinaryTreeTest, CompeleteBinaryTreeTestSuccess) {
+  BinaryTree<int> uut{1};
+  uut.root_->SetLeft(2);
+  uut.root_->SetRight(3);
+  uut.root_->left_->SetLeft(4);
+  uut.root_->left_->SetRight(5);
+  uut.root_->right_->SetLeft(6);
+  EXPECT_TRUE(uut.IsCompleteBinaryTree());
+  EXPECT_FALSE(uut.IsFullBinaryTree());
+}
+
+TEST(BinaryTreeTest, FullBinaryTreeTestSuccess) {
+  BinaryTree<int> uut{1};
+  uut.root_->SetLeft(2);
+  uut.root_->SetRight(3);
+  uut.root_->left_->SetLeft(4);
+  uut.root_->left_->SetRight(5);
+  uut.root_->right_->SetLeft(6);
+  uut.root_->right_->SetRight(7);
+  EXPECT_TRUE(uut.IsCompleteBinaryTree());
+  EXPECT_TRUE(uut.IsFullBinaryTree());
+  EXPECT_TRUE(uut.IsCompleteBinaryTree());
+}

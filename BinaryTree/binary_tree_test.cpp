@@ -7,6 +7,7 @@
 #include <iostream>     // NOLINT
 #include <string_view>  // NOLINT
 
+#include "binary_heap.hpp"
 #include "binary_tree.hpp"
 #include "tree.hpp"
 
@@ -112,4 +113,41 @@ TEST(BinaryTreeTest, FullBinaryTreeTestSuccess) {
   EXPECT_TRUE(uut.IsCompleteBinaryTree());
   EXPECT_TRUE(uut.IsFullBinaryTree());
   EXPECT_TRUE(uut.IsCompleteBinaryTree());
+}
+
+TEST(BinaryHeapTest, AddElement) {
+  BinaryHeap<std::string_view> uut{{"one","two","three","four"}};
+  EXPECT_EQ(uut.GetLeft(0).value().get(), "two");
+  EXPECT_NE(uut.GetLeft(0).value().get(), "three");
+  EXPECT_EQ(uut.GetRight(0).value().get(), "three");
+  EXPECT_NE(uut.GetRight(0).value().get(), "four");
+  EXPECT_FALSE(uut.GetRight(1).has_value());
+  EXPECT_EQ(uut.GetParent(2).value().get(), "one");
+}
+
+TEST(BinaryHeapTest, BreadthFirstTraverse) {
+  BinaryHeap<std::string_view> uut{{"one","two","three","four", "five"}};
+
+  std::vector<std::string_view> out{"two","four","five"};
+  size_t test_index{0};
+
+  uut.BreadthFirstSearch(1, [&uut,&out,&test_index](size_t index){
+    EXPECT_EQ(uut.arr_[index], out[test_index]);
+    ++test_index;
+    std::cout << uut.arr_[index] << '\n';
+    return true;
+  });
+}
+
+TEST(BinaryHeapTest, InsertTest) {
+  BinaryHeap<int> uut{};
+  uut.Insert(1);
+  uut.Insert(2);
+  uut.Insert(3);
+  uut.Insert(4);
+  uut.Insert(5);
+  uut.Insert(6);
+  for(auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
 }

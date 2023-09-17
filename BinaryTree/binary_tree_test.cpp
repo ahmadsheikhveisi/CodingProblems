@@ -116,7 +116,7 @@ TEST(BinaryTreeTest, FullBinaryTreeTestSuccess) {
 }
 
 TEST(BinaryHeapTest, AddElement) {
-  BinaryHeap<std::string_view> uut{{"one","two","three","four"}};
+  BinaryHeap<std::string_view> uut{{"one", "two", "three", "four"}};
   EXPECT_EQ(uut.GetLeft(0).value().get(), "two");
   EXPECT_NE(uut.GetLeft(0).value().get(), "three");
   EXPECT_EQ(uut.GetRight(0).value().get(), "three");
@@ -126,12 +126,12 @@ TEST(BinaryHeapTest, AddElement) {
 }
 
 TEST(BinaryHeapTest, BreadthFirstTraverse) {
-  BinaryHeap<std::string_view> uut{{"one","two","three","four", "five"}};
+  BinaryHeap<std::string_view> uut{{"one", "two", "three", "four", "five"}};
 
-  std::vector<std::string_view> out{"two","four","five"};
+  std::vector<std::string_view> out{"two", "four", "five"};
   size_t test_index{0};
 
-  uut.BreadthFirstSearch(1, [&uut,&out,&test_index](size_t index){
+  uut.BreadthFirstSearch(1, [&uut, &out, &test_index](size_t index) {
     EXPECT_EQ(uut.arr_[index], out[test_index]);
     ++test_index;
     std::cout << uut.arr_[index] << '\n';
@@ -146,8 +146,57 @@ TEST(BinaryHeapTest, InsertTest) {
   uut.Insert(3);
   uut.Insert(4);
   uut.Insert(5);
+  uut.Insert(0);
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+}
+
+TEST(BinaryHeapTest, InsertMaxHeapTest) {
+  BinaryHeap<int> uut{{}, [](const int& a, const int& b) {
+                        // this is the max heap
+                        return a > b;
+                      }};
+  uut.Insert(1);
+  uut.Insert(2);
+  uut.Insert(3);
+  uut.Insert(4);
+  uut.Insert(5);
   uut.Insert(6);
-  for(auto const& mem : uut.arr_) {
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+}
+
+TEST(BinaryHeapTest, RemoveTopHeapTest) {
+  BinaryHeap<int> uut{};
+  uut.Insert(1);
+  uut.Insert(2);
+  uut.Insert(3);
+  uut.Insert(4);
+  uut.Insert(5);
+  uut.Insert(0);
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+  std::cout << "extracted " << uut.Extract() << '\n';
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+  std::cout << "extracted " << uut.Extract() << '\n';
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+  std::cout << "extracted " << uut.Extract() << '\n';
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+  std::cout << "extracted " << uut.Extract() << '\n';
+  for (auto const& mem : uut.arr_) {
+    std::cout << mem << '\n';
+  }
+  std::cout << "extracted " << uut.Extract() << '\n';
+  for (auto const& mem : uut.arr_) {
     std::cout << mem << '\n';
   }
 }

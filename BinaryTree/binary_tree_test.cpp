@@ -10,6 +10,7 @@
 #include "binary_heap.hpp"
 #include "binary_tree.hpp"
 #include "tree.hpp"
+#include "tries.hpp"
 
 TEST(TreeTest, IsBinaryTree) {
   Tree<std::string_view> uut{"Zero"};
@@ -199,4 +200,16 @@ TEST(BinaryHeapTest, RemoveTopHeapTest) {
   for (auto const& mem : uut.arr_) {
     std::cout << mem << '\n';
   }
+}
+
+TEST(TriesTest, InsertTest) {
+  Tries uut;
+  uut.Insert("add");
+  uut.Insert("ant");
+  uut.Insert("about");
+  uut.Insert("abort");
+
+  EXPECT_TRUE(uut.Search("add"));
+  EXPECT_FALSE(uut.Search("ask"));
+  EXPECT_TRUE(uut.StartWith("abo"));
 }

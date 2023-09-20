@@ -70,3 +70,50 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+/**
+class temp {
+ public:
+ temp(const char* name) : name_{name} {
+    puts(name_);
+    puts(" constructed\n");
+ }
+ ~temp() {
+    puts(name_);
+    puts(" destructed\n");
+ }
+ temp(temp const& other) {
+    name_ = other.name_;
+    puts(name_);
+    puts(" copy constructed\n");
+ }
+ temp(temp&& other) {
+    name_ = std::move(other.name_);
+    puts(name_);
+    puts(" move constructed\n");
+ }
+ temp& operator=(temp const& other) &{
+    name_ = other.name_;
+    puts(name_);
+    puts(" copy assinged\n");
+    return *this;
+ }
+ temp& operator=(temp && other) &{  // this prevents the bind to lvale
+    name_ = std::move(other.name_);
+    puts(name_);
+    puts(" move assinged\n");
+    return *this;
+ } 
+ const char* name_;
+};
+
+temp make_temp() {
+    return temp{"make"};
+}
+
+int main() {
+    temp obj{"con"};
+    temp new_obj = temp{"new"} = obj;
+    return 0;
+}
+*/

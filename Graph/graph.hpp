@@ -22,8 +22,8 @@ class Graph {
  };
  class Vertex {
     public:
-    Vertex(std::string name) : name_{name}, adjacency_list_{}, visited_{false} {}
-    std::string name_;
+    Vertex(const std::string &name) : name_{name}, adjacency_list_{}, visited_{false} {}
+    const std::string& name_;
     bool visited_;
     // the reason why map is not used is map on vertex (custom or edge) is not possible.
     // and if we use only int for cost of the edge, we need more than one edge with a cost
@@ -43,7 +43,8 @@ class Graph {
     if (graph.find(name) != end(graph)) {
         return false;
     }
-    graph[name] = std::make_shared<Vertex>(name);
+    graph[name] = nullptr;
+    graph[name] = std::make_shared<Vertex>(graph.find(name)->first);
     return true;
  }
 
@@ -60,6 +61,7 @@ class Graph {
  }
 
  using Visit = std::function<bool(std::shared_ptr<Vertex>)>;
+ 
  void BreadthFirstSearch(std::shared_ptr<Vertex> vertex, Visit visit) {
     std::queue<std::shared_ptr<Vertex>> mqueue;
     vertex->visited_ = true;
@@ -70,13 +72,25 @@ class Graph {
         if (!visit(vrtx)) {
             return;
         }
-        for (auto neighbor : vrtx->adjacency_list_) {
+        for (auto& neighbor : vrtx->adjacency_list_) {
             if (!neighbor.first->visited_) {
                 mqueue.push(neighbor.first);
                 neighbor.first->visited_ = true;
             }
         }
     }
+ }
+
+ bool DepthFirstSearch(std::shared_ptr<Vertex> vertex, Visit visit) {
+    vertex->visited_ = true;
+    for (auto [neighbor, _] : vertex->adjacency_list_) {
+        if (neighbor->visited_ == false) {
+          if (!DepthFirstSearch(neighbor, visit)) {
+            return false;
+          }
+        }
+    }
+    return visit(vertex);
  }
 
 };

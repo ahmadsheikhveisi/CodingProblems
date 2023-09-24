@@ -26,7 +26,7 @@ class Graph {
   class Vertex {
    public:
     explicit Vertex(const std::string& name)
-        : name_{name}, adjacency_list_{}, visited_{false} {}
+        : name_{name}, visited_{false}, adjacency_list_{} {}
     const std::string& name_;
     bool visited_;
     // the reason why map is not used is map on vertex (custom or edge) is not
@@ -102,7 +102,8 @@ class Graph {
       if (!visit(vrtx)) {
         return;
       }
-      for (auto [neighbor, _] : vrtx->adjacency_list_) {
+      for (auto& [neighbor, _] : vrtx->adjacency_list_) {
+        (void)_;
         if (!neighbor->visited_) {
           mqueue.push(neighbor);
           neighbor->visited_ = true;
@@ -113,7 +114,8 @@ class Graph {
 
   bool DepthFirstSearch(std::shared_ptr<Vertex> vertex, Visit visit) {
     vertex->visited_ = true;
-    for (auto [neighbor, _] : vertex->adjacency_list_) {
+    for (auto& [neighbor, _] : vertex->adjacency_list_) {
+      (void)_;
       if (neighbor->visited_ == false) {
         if (!DepthFirstSearch(neighbor, visit)) {
           return false;
@@ -222,7 +224,8 @@ class Graph {
     if (!visit(vertex)) {
       return false;
     }
-    for (auto [neighbor, _] : vertex->adjacency_list_) {
+    for (auto& [neighbor, _] : vertex->adjacency_list_) {
+      (void)_;
       if (!is_visited(neighbor)) {
         set_visited(neighbor);
         mqueue.push(neighbor);

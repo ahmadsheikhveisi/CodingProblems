@@ -1,5 +1,7 @@
 /**
  * Copyright
+ * Given a directed graph, design an algorithm to find out whether
+ * there is a route between two nodes.
  */
 
 #ifndef CRACKING_4_1_ROUTEBETWEENNODES_SOLUTION_HPP_

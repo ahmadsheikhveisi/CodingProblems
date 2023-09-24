@@ -9,6 +9,7 @@
 #include <iostream>
 #include <memory>
 #include <queue>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -143,9 +144,50 @@ class BinaryTree {
     return ret;
   }
 
+  std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>, bool>
+  IsBinarySearchSubTree(std::shared_ptr<Node> root) {
+    auto left = root->left_;
+    auto right = root->right_;
+
+    if ((left == nullptr) && (right == nullptr)) {
+      return {root, root, true};
+    } else if ((left == nullptr) && (right != nullptr)) {
+      return {right, right, true};
+    } else if ((right == nullptr) && (left != nullptr)) {
+      return {left, left, true};
+    }
+    // if we get here, none of the child nodes are null
+    auto [left_smallest, left_biggest, left_result] =
+        IsBinarySearchSubTree(left);
+    auto [right_smallest, right_biggest, right_result] =
+        IsBinarySearchSubTree(right);
+
+    if (!left_result || !right_result) {
+      return {left, right, false};
+    }
+
+    if (!((left_biggest->value_ <= root->value_) &&
+          (right_smallest->value_ > root->value_))) {
+      return {left, right, false};
+    }
+
+    if (!(left_smallest->value_ < right_biggest->value_)) {
+      return {left, right, false};
+    }
+
+    return {left_biggest, right_smallest, true};
+  }
+
   bool IsBinarySearchTree() {
     // all left desendents <= n < all right desendents
-    return false;
+    // The root of a BST is the node that has the largest value in the left
+    // subtree and the smallest value in the right subtree
+    // We can keep the counter with the node and if we found the duplicate
+    // value, then we can increment the counter
+    auto [_, __, result] = IsBinarySearchSubTree(root_);
+    (void)_;
+    (void)__;
+    return result;
   }
 
   bool IsBalancedBinaryTree() {

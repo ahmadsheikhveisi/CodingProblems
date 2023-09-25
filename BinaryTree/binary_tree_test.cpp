@@ -8,6 +8,7 @@
 #include <string_view>  // NOLINT
 
 #include "binary_heap.hpp"
+#include "binary_search_tree.hpp"
 #include "binary_tree.hpp"
 #include "tree.hpp"
 #include "tries.hpp"
@@ -232,4 +233,31 @@ TEST(TriesTest, InsertTest) {
   EXPECT_TRUE(uut.Search("add"));
   EXPECT_FALSE(uut.Search("ask"));
   EXPECT_TRUE(uut.StartWith("abo"));
+}
+
+TEST(BinarySearchTreeTest, CreateBST) {
+  BinarySearcyTree<int> uut{5};
+  uut.Insert(1);
+  uut.Insert(2);
+  uut.Insert(3);
+  uut.Insert(0);
+  uut.Insert(6);
+  uut.Insert(7);
+
+  EXPECT_TRUE(uut.IsBinarySearchTree());
+
+  uut.BreadthFirstSearch(uut.root_,
+                         [](std::shared_ptr<BinaryTree<int>::Node> node) {
+                           std::cout << node->value_;
+                           if (node->left_ != nullptr) {
+                             std::cout << " l:" << node->left_->value_;
+                           }
+                           if (node->right_ != nullptr) {
+                             std::cout << " r: " << node->right_->value_;
+                           }
+                           std::cout << '\n';
+                           return true;
+                         });
+  EXPECT_TRUE(uut.Search(3));
+  EXPECT_FALSE(uut.Search(8));
 }

@@ -152,9 +152,17 @@ class BinaryTree {
     if ((left == nullptr) && (right == nullptr)) {
       return {root, root, true};
     } else if ((left == nullptr) && (right != nullptr)) {
-      return {right, right, true};
+      if (right->value_ > root->value_) {
+        return {root, right, true};
+      } else {
+        return {root, right, false};
+      }
     } else if ((right == nullptr) && (left != nullptr)) {
-      return {left, left, true};
+      if (left->value_ < root->value_) {
+        return {left, root, true};
+      } else {
+        return {left, root, false};
+      }
     }
     // if we get here, none of the child nodes are null
     auto [left_smallest, left_biggest, left_result] =

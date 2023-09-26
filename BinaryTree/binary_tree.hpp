@@ -37,7 +37,7 @@ class BinaryTree {
     T value_;
   };
 
-  explicit BinaryTree(T const& value) : root_{std::make_shared(value)} {}
+  explicit BinaryTree(T const& value) : root_{std::make_shared<Node>(value)} {}
   explicit BinaryTree(T&& value)
       : root_{std::make_shared<Node>(std::move(value))} {}
   std::shared_ptr<Node> root_{};

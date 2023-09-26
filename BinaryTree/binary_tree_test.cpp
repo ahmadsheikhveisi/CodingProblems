@@ -236,7 +236,7 @@ TEST(TriesTest, InsertTest) {
 }
 
 TEST(BinarySearchTreeTest, CreateBST) {
-  BinarySearcyTree<int> uut{5};
+  BinarySearchTree<int> uut{5};
   uut.Insert(1);
   uut.Insert(2);
   uut.Insert(3);

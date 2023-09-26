@@ -11,11 +11,11 @@
 #include "binary_tree.hpp"
 
 template <typename T>
-class BinarySearcyTree : public BinaryTree<T> {
+class BinarySearchTree : public BinaryTree<T> {
  public:
   using Node = typename BinaryTree<T>::Node;
-  explicit BinarySearcyTree(T const& value) : BinaryTree<T>{value} {}
-  explicit BinarySearcyTree(T&& value) : BinaryTree<T>{std::move(value)} {}
+  explicit BinarySearchTree(T const& value) : BinaryTree<T>{value} {}
+  explicit BinarySearchTree(T&& value) : BinaryTree<T>{std::move(value)} {}
 
   template <typename U>
   void Insert(U&& value) {

@@ -143,8 +143,8 @@ class BinaryTree {
                        });
     return ret;
   }
-
-  std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>, bool>
+  // this is wrong
+  /*std::tuple<std::shared_ptr<Node>, std::shared_ptr<Node>, bool>
   IsBinarySearchSubTree(std::shared_ptr<Node> root) {
     auto left = root->left_;
     auto right = root->right_;
@@ -184,6 +184,26 @@ class BinaryTree {
     }
 
     return {left_biggest, right_smallest, true};
+  }*/
+  bool IsBinarySearchSubTree(std::shared_ptr<Node> node,
+                             std::optional<T> min = std::nullopt,
+                             std::optional<T> max = std::nullopt) {
+    if (node == nullptr) {
+      return true;
+    }
+
+    if (min.has_value()) {
+      if (node->value_ <= min.value()) {
+        return false;
+      }
+    }
+    if (max.has_value()) {
+      if (node->value_ >= max.value()) {
+        return false;
+      }
+    }
+    return IsBinarySearchSubTree(node->left_, min, node->value_) &&
+           IsBinarySearchSubTree(node->right_, node->value_, max);
   }
 
   bool IsBinarySearchTree() {
@@ -192,10 +212,11 @@ class BinaryTree {
     // subtree and the smallest value in the right subtree
     // We can keep the counter with the node and if we found the duplicate
     // value, then we can increment the counter
-    auto [_, __, result] = IsBinarySearchSubTree(root_);
+    return IsBinarySearchSubTree(root_);
+    /*auto [_, __, result] = IsBinarySearchSubTree(root_);
     (void)_;
     (void)__;
-    return result;
+    return result;*/
   }
 
   bool IsBalancedBinaryTree() {

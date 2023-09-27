@@ -137,6 +137,17 @@ TEST(BinaryTreeTest, BinarySearchTreeFail) {
   EXPECT_FALSE(uut.IsBinarySearchTree());
 }
 
+TEST(BinaryTreeTest, BinarySearchTreeFail2) {
+  BinaryTree<int> uut{4};
+  uut.root_->SetLeft(2);
+  uut.root_->left_->SetLeft(1);
+  uut.root_->left_->SetRight(5);
+  uut.root_->left_->right_->SetLeft(3);
+  uut.root_->left_->right_->SetRight(6);
+  uut.root_->left_->right_->right_->SetRight(7);
+  EXPECT_FALSE(uut.IsBinarySearchTree());
+}
+
 TEST(BinaryHeapTest, AddElement) {
   BinaryHeap<std::string_view> uut{{"one", "two", "three", "four"}};
   EXPECT_EQ(uut.GetLeft(0).value().get(), "two");

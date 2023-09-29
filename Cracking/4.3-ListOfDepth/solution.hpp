@@ -54,8 +54,7 @@ private:
 
   void ListOfDepthSubTree(std::shared_ptr<Node> node, size_t current_height, std::unordered_map<std::shared_ptr<Node>, size_t>& list) {
     if (node == nullptr) {
-      // this only happens when only one of the children is
-      // null. so no need to store it.
+      // no need to store it.
       return;
     }
     list[node] = current_height;

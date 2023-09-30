@@ -5,6 +5,7 @@
 #ifndef BINARYTREE_BINARY_TREE_HPP_
 #define BINARYTREE_BINARY_TREE_HPP_
 
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -219,12 +220,39 @@ class BinaryTree {
     return result;*/
   }
 
-  bool IsBalancedBinaryTree() {
+  std::tuple<bool, size_t> IsBalancedBinaryTreeAVLSubTree(
+      std::shared_ptr<Node> node) {
+    if (node == nullptr) {
+      return {true, 0};
+    }
+    if ((node->left_ == nullptr) && (node->right_ == nullptr)) {
+      return {true, 0};
+    }
+    auto [left_res, left_height] = IsBalancedBinaryTreeAVLSubTree(node->left_);
+    auto [right_res, right_height] =
+        IsBalancedBinaryTreeAVLSubTree(node->right_);
+    auto height = std::max(left_height, right_height);
+    auto diff_height = left_height > right_height ? left_height - right_height
+                                                  : right_height - left_height;
+    auto res = (left_res && right_res) && (diff_height < 1);
+    return {res, height};
+  }
+
+  bool IsBalancedBinaryTreeAVL() {
     // the height of balaced tree is O(Log n) n:the number of nodes.
     /**
      * the AVL tree maintains O(Log n) height by making sure that the
-     * difference between the heights of the left and right subtrees
-     * is at most 1.
+     * difference between the heights of the left and right subtrees is at
+     * most 1. Balanced Binary Search trees are performance-wise good as they
+     * provide O(log n) time for search, insert and delete.
+     */
+    auto res = IsBalancedBinaryTreeAVLSubTree(root_);
+    return std::get<bool>(res);
+  }
+
+  bool IsBalancedBinaryTreeRedBlack() {
+    // the height of balaced tree is O(Log n) n:the number of nodes.
+    /**
      * Red-Black trees maintain O(Log n) height by making
      * sure that the number of Black nodes on every root to leaf paths
      * is the same and that there are no adjacent red nodes. Balanced

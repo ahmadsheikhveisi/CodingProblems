@@ -1,5 +1,8 @@
 /**
  * Copyright
+ * A min/max-heap is a complete binary tree (that is, totally filled other than
+ * rightmost elements on the last level) where each node is smaller/larger than
+ * its children.
  */
 
 #ifndef BINARYTREE_BINARY_HEAP_HPP_

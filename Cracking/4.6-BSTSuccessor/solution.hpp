@@ -47,7 +47,8 @@ class Solution {
           // we need to visit grand parent.
           auto par = node->value_.parent_;
           auto grand_parent = par->value_.parent_;
-          while ((grand_parent != nullptr) &&  (grand_parent->value_.value_ < par->value_.value_)) {
+          while ((grand_parent != nullptr) &&
+                 (grand_parent->value_.value_ < par->value_.value_)) {
             par = par->value_.parent_;
             if (par == nullptr) {
               break;
@@ -73,7 +74,7 @@ class Solution {
       }
       return temp;
     }
-    
+
     return nullptr;
   }
 

@@ -30,8 +30,10 @@ TEST(BSTSuccessor, BSTSuccessorSuccess) {
       });
 
   EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_), uut.tree_.root_->right_->left_);
-  EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->left_), uut.tree_.root_->left_->right_);
+  EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->left_),
+            uut.tree_.root_->left_->right_);
   EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->left_->right_), uut.tree_.root_);
   EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->right_->right_), nullptr);
-  EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->right_->left_), uut.tree_.root_->right_);
+  EXPECT_EQ(uut.FindSuccessor(uut.tree_.root_->right_->left_),
+            uut.tree_.root_->right_);
 }

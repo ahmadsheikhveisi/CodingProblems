@@ -34,7 +34,47 @@ class Solution {
       : tree_{ValueType{nullptr, std::forward<U>(value)}} {}
 
   std::shared_ptr<Node> FindSuccessor(std::shared_ptr<Node> node) {
-    return node;
+    if (node == nullptr) {
+      return node;
+    }
+    auto node_value = node->value_.value_;
+    if ((node->left_ == nullptr) && (node->right_ == nullptr)) {
+      // this is a leaf node.
+      if (node->value_.parent_ != nullptr) {
+        auto parent_value = node->value_.parent_->value_.value_;
+        if (parent_value < node_value) {
+          // this is right leaf
+          // we need to visit grand parent.
+          auto par = node->value_.parent_;
+          auto grand_parent = par->value_.parent_;
+          while ((grand_parent != nullptr) &&  (grand_parent->value_.value_ < par->value_.value_)) {
+            par = par->value_.parent_;
+            if (par == nullptr) {
+              break;
+            }
+            grand_parent = par->value_.parent_;
+          }
+          return grand_parent;
+        } else {
+          // this is left leaf.
+          // we need to visit parent
+          return node->value_.parent_;
+        }
+      } else {
+        // this is a tree with one node only.
+        return nullptr;
+      }
+    } else {
+      // we need to find the left most leaf
+      // of the right subtree;
+      auto temp = node->right_;
+      while (temp->left_ != nullptr) {
+        temp = temp->left_;
+      }
+      return temp;
+    }
+    
+    return nullptr;
   }
 
   template <typename U>

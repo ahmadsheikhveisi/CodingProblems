@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -30,40 +31,59 @@ class Solution {
       std::vector<std::string> projects,
       std::vector<std::pair<std::string, std::string>> dependencies) {
     Graph graph{};
-    std::vector<std::string> res{};
+    std::unordered_map<std::string, std::vector<std::string>> parent_map{};
+    std::vector<std::string> build_order{};
     for (auto const& proj : projects) {
       graph.AddVertex(proj);
     }
     for (auto const& [from, to] : dependencies) {
       graph.AddEdge(from, to);
       graph.graph_[to]->visited_ = true;
+      parent_map[to].push_back(from);
     }
-    std::vector<std::string> starting_vertex{};
     for (auto const& [name, vertex] : graph.graph_) {
       if (!vertex->visited_) {
-        starting_vertex.push_back(name);
+        build_order.push_back(name);
       }
     }
     graph.Reset();
-    for (auto const& node : starting_vertex) {
-      res.push_back(node);
+    for (auto const& node : build_order) {
+      graph.FindVertedByName(node)->visited_ = true;
     }
-    for (auto const& node : starting_vertex) {
-      graph.BreadthFirstSearch(
+    for (size_t cnt{0}; cnt < build_order.size(); ++cnt) {
+      /**
+       * this doesn't cover the situation where there is triangle dependecies.
+       * graph.BreadthFirstSearch(
           graph.FindVertedByName(node),
           [&res](std::shared_ptr<Graph::Vertex> vertex) {
             if (std::find(begin(res), end(res), vertex->name_) == end(res)) {
               res.push_back(vertex->name_);
             }
             return true;
-          });
+          });*/
+      auto vertex = graph.FindVertedByName(build_order[cnt]);
+      for (auto const& chld : vertex->adjacency_list_) {
+        if (!chld.first->visited_) {
+          bool all_build{true};
+          for (auto const& parent : parent_map[chld.first->name_]) {
+            if (!graph.FindVertedByName(parent)->visited_) {
+              all_build = false;
+              break;
+            }
+          }
+          if (all_build) {
+            build_order.push_back(chld.first->name_);
+            chld.first->visited_ = true;
+          }
+        }
+      }
     }
     for (auto const& proj : projects) {
       if (!graph.FindVertedByName(proj)->visited_) {
         return {};
       }
     }
-    return res;
+    return build_order;
   }
 };
 

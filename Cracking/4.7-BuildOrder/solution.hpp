@@ -27,6 +27,14 @@
 
 class Solution {
  public:
+  std::vector<std::string> FindBuildOrderDFS(
+      std::vector<std::string> projects,
+      std::vector<std::pair<std::string, std::string>> dependencies) {
+    (void)projects;
+    (void)dependencies;
+    return {};
+  }
+
   std::vector<std::string> FindBuildOrder(
       std::vector<std::string> projects,
       std::vector<std::pair<std::string, std::string>> dependencies) {

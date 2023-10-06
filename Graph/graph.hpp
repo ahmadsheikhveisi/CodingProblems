@@ -89,7 +89,8 @@ class Graph {
     if (!directed_) {
       to_it->second->AddVertex(from_it->second, Edge{cost, length});
     } else {
-      to_it->second->parents_.push_back(std::make_pair(from_it->second, Edge{cost, length}));
+      to_it->second->parents_.push_back(
+          std::make_pair(from_it->second, Edge{cost, length}));
     }
     return true;
   }

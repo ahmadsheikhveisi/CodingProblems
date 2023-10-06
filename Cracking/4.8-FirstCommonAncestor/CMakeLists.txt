@@ -4,7 +4,7 @@ project(FirstCommonAncestor)
 
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(${PROJECT_NAME} INTERFACE Graph)
+target_link_libraries(${PROJECT_NAME} INTERFACE BinaryTree)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-save-temps")
 

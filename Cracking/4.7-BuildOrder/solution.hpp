@@ -106,14 +106,15 @@ class Solution {
     return build_order;
   }
 
-  private:
+ private:
   enum class VertexState : std::uint8_t {
     kVisiting,
     kNotVisited,
     kVisited,
   };
 
-  Graph BuildGraph(std::vector<std::string> projects,
+  Graph BuildGraph(
+      std::vector<std::string> projects,
       std::vector<std::pair<std::string, std::string>> dependencies) {
     Graph graph{};
     for (auto const& proj : projects) {
@@ -126,9 +127,11 @@ class Solution {
     return graph;
   }
 
-  bool FindBuildOrderDFSRec(std::reference_wrapper<std::vector<std::string>> rres,
-                            std::reference_wrapper<std::unordered_map<std::string, VertexState>> rvisit_state,
-                            std::shared_ptr<Graph::Vertex> node) {
+  bool FindBuildOrderDFSRec(
+      std::reference_wrapper<std::vector<std::string>> rres,
+      std::reference_wrapper<std::unordered_map<std::string, VertexState>>
+          rvisit_state,
+      std::shared_ptr<Graph::Vertex> node) {
     auto& res = rres.get();
     auto& visit_state = rvisit_state.get();
     if (visit_state[node->name_] == VertexState::kVisiting) {
@@ -138,9 +141,9 @@ class Solution {
     visit_state[node->name_] = VertexState::kVisiting;
     for (auto const& chld : node->adjacency_list_) {
       if (visit_state[chld.first->name_] != VertexState::kVisited) {
-          if (!FindBuildOrderDFSRec(rres, rvisit_state, chld.first)) {
-            return false;
-          }
+        if (!FindBuildOrderDFSRec(rres, rvisit_state, chld.first)) {
+          return false;
+        }
       }
     }
     res.push_back(node->name_);

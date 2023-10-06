@@ -50,17 +50,25 @@ TEST(BuildOrder, BuildOrderExample) {
                                                                 {"b", "a"}};
     auto res = uut.FindBuildOrder(projects, dependencies);
     EXPECT_TRUE(CheckRes(res, projects, dependencies));
-  
+    auto res_dfs = uut.FindBuildOrderDFS(projects, dependencies);
+    EXPECT_TRUE(CheckRes(res_dfs, projects, dependencies));
+    for (auto const& node : res_dfs) {
+      std::cout << node << ' ';
+    }
+    std::cout << '\n';
 }
 TEST(BuildOrder, BuildOrderExampleFail) {
   Solution uut;
-  EXPECT_EQ(uut.FindBuildOrder({"a", "b", "c", "d", "e", "f"}, {{"a", "b"},
+  std::vector<std::string> projects{"a", "b", "c", "d", "e", "f"};
+  std::vector<std::pair<std::string, std::string>> dependencies{{"a", "b"},
                                                                 {"b", "c"},
                                                                 {"b", "d"},
                                                                 {"f", "a"},
                                                                 {"d", "c"},
-                                                                {"d", "f"}}),
+                                                                {"d", "f"}};
+  EXPECT_EQ(uut.FindBuildOrder(projects, dependencies),
             std::vector<std::string>());  // has a cycle
+  EXPECT_EQ(uut.FindBuildOrderDFS(projects, dependencies), std::vector<std::string>());
 }
 TEST(BuildOrder, BuildOrderExample2) {
   Solution uut;
@@ -73,13 +81,24 @@ TEST(BuildOrder, BuildOrderExample2) {
                                                                {"f", "b"},
                                                                {"f", "c"},
                                                                {"d", "g"}};
-  auto res =
+  {
+    auto res =
       uut.FindBuildOrder(projects, dependencies);
   for (auto const& proj : res) {
     std::cout << proj << ' ';
   }
   std::cout << '\n';
   EXPECT_TRUE(CheckRes(res, projects, dependencies));
+  }
+  {
+    auto res =
+      uut.FindBuildOrderDFS(projects, dependencies);
+  for (auto const& proj : res) {
+    std::cout << proj << ' ';
+  }
+  std::cout << '\n';
+  EXPECT_TRUE(CheckRes(res, projects, dependencies));
+  }
 }
 
 TEST(CheckResTest, OneExtra) {
@@ -97,3 +116,11 @@ TEST(CheckResTest, DifferentOrder) {
   EXPECT_TRUE(CheckRes<int>({1,5,2,4},{1,2,5,4},{}));
 }
 
+TEST(BuildOrder, BuildOrderDFS) {
+  Solution uut;
+  auto res = uut.FindBuildOrderDFS({"1","2","3", "4", "5"},{{"2", "1"},{"1", "3"}, {"2", "5"}});
+  for (const auto& node : res) {
+    std::cout << node << ' ';
+  }
+  std::cout << '\n';
+}

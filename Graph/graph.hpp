@@ -26,7 +26,7 @@ class Graph {
   class Vertex {
    public:
     explicit Vertex(const std::string& name)
-        : name_{name}, visited_{false}, adjacency_list_{} {}
+        : name_{name}, visited_{false}, adjacency_list_{}, parents_{} {}
     const std::string& name_;
     bool visited_;
     // the reason why map is not used is map on vertex (custom or edge) is not
@@ -34,6 +34,7 @@ class Graph {
     // one edge with a cost the only solution might be multimap, which still
     // doesn't help in searching.
     std::vector<std::pair<std::shared_ptr<Vertex>, Edge>> adjacency_list_;
+    std::vector<std::pair<std::shared_ptr<Vertex>, Edge>> parents_;
 
     void AddVertex(std::shared_ptr<Vertex> to_vertex, Edge edge) {
       auto new_edge = std::make_pair(to_vertex, edge);
@@ -87,6 +88,8 @@ class Graph {
     from_it->second->AddVertex(to_it->second, Edge{cost, length});
     if (!directed_) {
       to_it->second->AddVertex(from_it->second, Edge{cost, length});
+    } else {
+      to_it->second->parents_.push_back(std::make_pair(from_it->second, Edge{cost, length}));
     }
     return true;
   }

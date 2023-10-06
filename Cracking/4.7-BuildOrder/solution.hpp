@@ -28,16 +28,28 @@
 class Solution {
  public:
   std::vector<std::string> FindBuildOrderDFS(
-      std::vector<std::string> projects,
-      std::vector<std::pair<std::string, std::string>> dependencies) {
-    (void)projects;
-    (void)dependencies;
-    return {};
+      std::vector<std::string> const& projects,
+      std::vector<std::pair<std::string, std::string>> const& dependencies) {
+    std::unordered_map<std::string, VertexState> visit_state{};
+    for (auto const& proj : projects) {
+      visit_state[proj] = VertexState::kNotVisited;
+    }
+    auto graph = BuildGraph(projects, dependencies);
+    std::vector<std::string> res{};
+    for (auto const& [name, node] : graph.graph_) {
+      if (visit_state[name] != VertexState::kVisited) {
+        if (!FindBuildOrderDFSRec(res, visit_state, node)) {
+          return {};
+        }
+      }
+    }
+    std::reverse(begin(res), end(res));
+    return res;
   }
 
   std::vector<std::string> FindBuildOrder(
-      std::vector<std::string> projects,
-      std::vector<std::pair<std::string, std::string>> dependencies) {
+      std::vector<std::string> const& projects,
+      std::vector<std::pair<std::string, std::string>> const& dependencies) {
     Graph graph{};
     std::unordered_map<std::string, std::vector<std::string>> parent_map{};
     std::vector<std::string> build_order{};
@@ -92,6 +104,48 @@ class Solution {
       }
     }
     return build_order;
+  }
+
+  private:
+  enum class VertexState : std::uint8_t {
+    kVisiting,
+    kNotVisited,
+    kVisited,
+  };
+
+  Graph BuildGraph(std::vector<std::string> projects,
+      std::vector<std::pair<std::string, std::string>> dependencies) {
+    Graph graph{};
+    for (auto const& proj : projects) {
+      graph.AddVertex(proj);
+    }
+    for (auto const& [from, to] : dependencies) {
+      graph.AddEdge(from, to);
+      graph.graph_[to]->visited_ = true;
+    }
+    return graph;
+  }
+
+  bool FindBuildOrderDFSRec(std::reference_wrapper<std::vector<std::string>> rres,
+                            std::reference_wrapper<std::unordered_map<std::string, VertexState>> rvisit_state,
+                            std::shared_ptr<Graph::Vertex> node) {
+    auto& res = rres.get();
+    auto& visit_state = rvisit_state.get();
+    if (visit_state[node->name_] == VertexState::kVisiting) {
+      // loop.
+      return false;
+    }
+    visit_state[node->name_] = VertexState::kVisiting;
+    for (auto const& chld : node->adjacency_list_) {
+      if (visit_state[chld.first->name_] != VertexState::kVisited) {
+          if (!FindBuildOrderDFSRec(rres, rvisit_state, chld.first)) {
+            return false;
+          }
+      }
+    }
+    res.push_back(node->name_);
+    visit_state[node->name_] = VertexState::kVisited;
+    return true;
   }
 };
 

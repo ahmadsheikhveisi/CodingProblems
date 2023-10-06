@@ -38,4 +38,7 @@
  * kernel.core_pattern=/tmp/cores/core.%e.%p.%h.%t
  * remember %e truncates the filename to 15 chars
   then you need a proper launch config
+ * Don't push_back in the range-loop over the vector
+ * you can't have std::optional< with the same type> as a member variable
+ * it is not possible to have a vector of references. you need reference wrapper.
   

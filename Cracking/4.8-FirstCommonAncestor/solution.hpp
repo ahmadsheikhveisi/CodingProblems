@@ -32,7 +32,25 @@ class Solution {
     bool found2{false};
     NodePtr res{nullptr};
     FindFirstCommonAncestorRec(bt.root_, found1, found2, node1, node2, res);
+
     return res;
+  }
+
+  NodePtr FindFirstCommonAncestorUsingParentLink(NodePtr node1, NodePtr node2) {
+    auto dep1 = CalculateDepth(node1);
+    auto dep2 = CalculateDepth(node2);
+    auto dep_diff = dep2 > dep1 ? dep2 - dep1 : dep1 - dep2;
+    auto upper = dep2 > dep1 ? node1 : node2;
+    auto lower = upper == node1 ? node2 : node1;
+    while (dep_diff > 0) {
+      lower = lower->parent_;
+      --dep_diff;
+    }
+    while (upper != lower && upper != nullptr && lower != nullptr) {
+      upper = upper->parent_;
+      lower = lower->parent_;
+    }
+    return ((upper == nullptr) || (lower == nullptr)) ? nullptr : upper;
   }
 
  private:
@@ -71,6 +89,15 @@ class Solution {
       }
     }
     return right_res || left_res;
+  }
+
+  size_t CalculateDepth(NodePtr node) {
+    size_t depth{0};
+    while (node != nullptr) {
+      ++depth;
+      node = node->parent_;
+    }
+    return depth;
   }
 };
 

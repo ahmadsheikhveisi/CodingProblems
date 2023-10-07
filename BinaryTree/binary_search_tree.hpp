@@ -32,7 +32,7 @@ class BinarySearchTree : public BinaryTree<T> {
                   U&& value) {
     auto& node = rnode.get();
     if (node == nullptr) {
-      node = std::make_shared<Node>(std::forward<U>(value));
+      node = Node::Create(std::forward<U>(value));
       return;
     }
     if (node->value_ == value) {

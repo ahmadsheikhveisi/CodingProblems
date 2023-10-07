@@ -90,7 +90,7 @@ class Solution {
       std::shared_ptr<Node> parent) {
     auto& node = rnode.get();
     if (node == nullptr) {
-      node = std::make_shared<Node>(ValueType{parent, std::forward<U>(value)});
+      node = Node::Create(ValueType{parent, std::forward<U>(value)});
       return;
     }
     if (node->value_.value_ == value) {

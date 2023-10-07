@@ -17,30 +17,39 @@
 template <typename T>
 class BinaryTree {
  public:
-  class Node {
-   public:
-    explicit Node(T const& value) : value_{value} {
+  class Node : public std::enable_shared_from_this<Node> {
+    explicit Node(T const& value)
+        : value_{value}, left_{nullptr}, right_{nullptr}, parent_{nullptr} {
       std::cout << "copy constructed\n";
     }
     explicit Node(T&& value) : value_{std::move(value)} {
       std::cout << "move constructed\n";
     };
+
+   public:
+    template <typename U>
+    [[nodiscard]] static std::shared_ptr<Node> Create(U&& val) {
+      return std::shared_ptr<Node>(new Node(std::forward<U>(val)));
+    }
+
     template <typename W>
     void SetLeft(W&& value) {
-      left_ = std::make_shared<Node>(std::forward<W>(value));
+      left_ = Node::Create(std::forward<W>(value));
+      left_->parent_ = this->shared_from_this();
     }
     template <typename W>
     void SetRight(W&& value) {
-      right_ = std::make_shared<Node>(std::forward<W>(value));
+      right_ = Node::Create(std::forward<W>(value));
+      right_->parent_ = this->shared_from_this();
     }
     std::shared_ptr<Node> left_;
     std::shared_ptr<Node> right_;
+    std::shared_ptr<Node> parent_;
     T value_;
   };
 
-  explicit BinaryTree(T const& value) : root_{std::make_shared<Node>(value)} {}
-  explicit BinaryTree(T&& value)
-      : root_{std::make_shared<Node>(std::move(value))} {}
+  explicit BinaryTree(T const& value) : root_{Node::Create(value)} {}
+  explicit BinaryTree(T&& value) : root_{Node::Create(std::move(value))} {}
   std::shared_ptr<Node> root_{};
 
   using Visit = std::function<bool(std::shared_ptr<Node>)>;

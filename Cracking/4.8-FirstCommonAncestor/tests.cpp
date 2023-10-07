@@ -27,4 +27,15 @@ TEST(FirstCommonAncestor, test1) {
                                          bt.root_->right_->left_->right_);
 
   EXPECT_EQ(res, bt.root_->right_);
+
+  EXPECT_EQ(uut.FindFirstCommonAncestor(bt, bt.root_->right_->right_,
+                                        bt.root_->right_->right_->right_),
+            bt.root_->right_);
+
+  EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLink(
+                bt.root_->right_->right_, bt.root_->right_->left_->right_),
+            bt.root_->right_);
+  EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLink(
+                bt.root_->right_->right_, bt.root_->right_->right_->right_),
+            bt.root_->right_);
 }

@@ -30,12 +30,22 @@ TEST(FirstCommonAncestor, test1) {
 
   EXPECT_EQ(uut.FindFirstCommonAncestor(bt, bt.root_->right_->right_,
                                         bt.root_->right_->right_->right_),
-            bt.root_->right_);
+            bt.root_->right_->right_);
+  EXPECT_EQ(uut.FindFirstCommonAncestor(bt, bt.root_->right_->right_,
+                                        BinaryTree<int>::Node::Create(17)),
+            nullptr);
 
   EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLink(
                 bt.root_->right_->right_, bt.root_->right_->left_->right_),
             bt.root_->right_);
   EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLink(
                 bt.root_->right_->right_, bt.root_->right_->right_->right_),
+            bt.root_->right_->right_);
+
+  EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLinkOpt(
+                bt.root_->right_->right_, bt.root_->right_->left_->right_),
             bt.root_->right_);
+  EXPECT_EQ(uut.FindFirstCommonAncestorUsingParentLinkOpt(
+                bt.root_->right_->right_, bt.root_->right_->right_->right_),
+            bt.root_->right_->right_);
 }

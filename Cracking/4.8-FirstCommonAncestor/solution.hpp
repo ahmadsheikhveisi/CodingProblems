@@ -28,10 +28,9 @@ class Solution {
     if (node1 == node2) {
       return node1;
     }
-    bool found1{false};
-    bool found2{false};
+    bool found{false};
     NodePtr res{nullptr};
-    FindFirstCommonAncestorRec(bt.root_, found1, found2, node1, node2, res);
+    FindFirstCommonAncestorRec(bt.root_, found, node1, node2, res);
 
     return res;
   }
@@ -53,40 +52,50 @@ class Solution {
     return ((upper == nullptr) || (lower == nullptr)) ? nullptr : upper;
   }
 
+  NodePtr FindFirstCommonAncestorUsingParentLinkOpt(NodePtr node1,
+                                                    NodePtr node2) {
+    if (ExistsInSubtree(node1, node2)) {
+      return node1;
+    }
+    if (ExistsInSubtree(node2, node1)) {
+      return node2;
+    }
+    auto sibling = GetSiblingWithParentLink(node1);
+    auto parent = node1->parent_;
+    while (!ExistsInSubtree(sibling, node2)) {
+      sibling = GetSiblingWithParentLink(parent);
+      parent = parent->parent_;
+    }
+    return parent;
+  }
+
  private:
   bool FindFirstCommonAncestorRec(NodePtr node,
-                                  std::reference_wrapper<bool> rfound1,
-                                  std::reference_wrapper<bool> rfound2,
+                                  std::reference_wrapper<bool> rfound,
                                   NodePtr node1, NodePtr node2,
                                   std::reference_wrapper<NodePtr> rres) {
-    auto& found1 = rfound1.get();
-    auto& found2 = rfound2.get();
+    auto& found = rfound.get();
     auto& res = rres.get();
     if (node == nullptr) {
       return false;
     }
-    auto right_res = FindFirstCommonAncestorRec(node->right_, found1, found2,
-                                                node1, node2, res);
-    auto left_res = FindFirstCommonAncestorRec(node->left_, found1, found2,
-                                               node1, node2, res);
+    auto right_res =
+        FindFirstCommonAncestorRec(node->right_, found, node1, node2, res);
+    auto left_res =
+        FindFirstCommonAncestorRec(node->left_, found, node1, node2, res);
     if (right_res && left_res) {
-      if (found1 == false) {
-        found1 = true;
+      if (found == false) {
+        found = true;
         res = node;
       }
       return true;
     }
     if ((node == node1) || (node == node2)) {
       if (right_res || left_res) {
-        found2 = true;
-      }
-      return true;
-    }
-    if ((found2 == true) && (right_res || left_res)) {
-      if (found1 == false) {
-        found1 = true;
+        found = true;
         res = node;
       }
+      return true;
     }
     return right_res || left_res;
   }
@@ -98,6 +107,24 @@ class Solution {
       node = node->parent_;
     }
     return depth;
+  }
+
+  bool ExistsInSubtree(NodePtr root, NodePtr node) {
+    if (root == nullptr) {
+      return false;
+    }
+    if (root == node) {
+      return true;
+    }
+    return ExistsInSubtree(root->left_, node) ||
+           ExistsInSubtree(root->right_, node);
+  }
+  NodePtr GetSiblingWithParentLink(NodePtr node) {
+    if ((node == nullptr) || (node->parent_ == nullptr)) {
+      return nullptr;
+    }
+    return node->parent_->left_ == node ? node->parent_->right_
+                                        : node->parent_->left_;
   }
 };
 

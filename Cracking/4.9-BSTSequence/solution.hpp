@@ -61,6 +61,18 @@ class Solution {
         for (auto& node :nodes) {
             depth_vals.push_back(node->value_);
         }
+        std::vector<std::vector<T>> dep_perm{};
+        do {
+          dep_perm.push_back(depth_vals);
+        } while(std::next_permutation(begin(depth_vals), end(depth_vals)));
+        std::vector<std::vector<T>> new_res{};
+        for (auto const& perm : dep_perm) {
+          for (auto elm_res : res) {
+            elm_res.insert(end(elm_res), begin(perm), end(perm));
+            new_res.push_back(elm_res);
+          }
+        }
+        res = new_res;
       }
 
     return res;

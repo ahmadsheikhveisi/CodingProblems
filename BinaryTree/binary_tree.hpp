@@ -22,7 +22,7 @@ class BinaryTree {
         : value_{value}, left_{nullptr}, right_{nullptr}, parent_{nullptr} {
       std::cout << "copy constructed\n";
     }
-    explicit Node(T&& value) : value_{std::move(value)} {
+    explicit Node(T&& value) : value_{std::move(value)}, left_{nullptr}, right_{nullptr}, parent_{nullptr} {
       std::cout << "move constructed\n";
     };
 
@@ -42,10 +42,10 @@ class BinaryTree {
       right_ = Node::Create(std::forward<W>(value));
       right_->parent_ = this->shared_from_this();
     }
+    T value_;
     std::shared_ptr<Node> left_;
     std::shared_ptr<Node> right_;
     std::shared_ptr<Node> parent_;
-    T value_;
   };
 
   explicit BinaryTree(T const& value) : root_{Node::Create(value)} {}
@@ -307,5 +307,29 @@ class BinaryTree {
 
  private:
 };
+
+template<typename T>
+bool operator==(BinaryTree<T> const& lhs, BinaryTree<T> const& rhs) {
+  using NodePtr = std::shared_ptr<typename BinaryTree<T>::Node>;
+
+  std::queue<std::pair<NodePtr, NodePtr>> qu;
+    qu.push({lhs.root_, rhs.root_});
+    while (!qu.empty()) {
+      auto [lnd, rnd] = qu.front();
+      qu.pop();
+      if ((lnd == nullptr) != (rnd == nullptr)) {
+        return false;
+      }
+      if (lnd != nullptr) {
+        if (lnd->value_ != rnd->value_) {
+          return false;
+        }
+        qu.push({lnd->left_, rnd->left_});
+        qu.push({lnd->right_, rnd->right_});
+      }
+    }
+
+  return true;
+}
 
 #endif  // BINARYTREE_BINARY_TREE_HPP_

@@ -148,6 +148,53 @@ TEST(BinaryTreeTest, BinarySearchTreeFail2) {
   EXPECT_FALSE(uut.IsBinarySearchTree());
 }
 
+TEST(BinaryTreeTest, BinaryTreeEqualitySuccess) {
+  BinaryTree<int> uut1{4};
+  uut1.root_->SetLeft(2);
+  uut1.root_->SetRight(2);
+  uut1.root_->left_->SetLeft(1);
+  uut1.root_->left_->SetRight(5);
+
+  BinaryTree<int> uut2{4};
+  uut2.root_->SetLeft(2);
+  uut2.root_->SetRight(2);
+  uut2.root_->left_->SetLeft(1);
+  uut2.root_->left_->SetRight(5);
+
+  EXPECT_TRUE(uut1 == uut2);
+}
+
+TEST(BinaryTreeTest, BinaryTreeEqualityFailNull) {
+  BinaryTree<int> uut1{4};
+  uut1.root_->SetLeft(2);
+  uut1.root_->SetRight(2);
+  uut1.root_->left_->SetLeft(1);
+  uut1.root_->left_->SetRight(5);
+
+  BinaryTree<int> uut2{4};
+  uut2.root_->SetLeft(2);
+  uut2.root_->SetRight(2);
+  uut2.root_->left_->SetLeft(1);
+
+  EXPECT_FALSE(uut1 == uut2);
+}
+
+TEST(BinaryTreeTest, BinaryTreeEqualityFailDiffVal) {
+  BinaryTree<int> uut1{4};
+  uut1.root_->SetLeft(2);
+  uut1.root_->SetRight(2);
+  uut1.root_->left_->SetLeft(1);
+  uut1.root_->left_->SetRight(5);
+
+  BinaryTree<int> uut2{4};
+  uut2.root_->SetLeft(2);
+  uut2.root_->SetRight(2);
+  uut2.root_->left_->SetLeft(1);
+  uut2.root_->left_->SetRight(6);
+
+  EXPECT_FALSE(uut1 == uut2);
+}
+
 TEST(BinaryHeapTest, AddElement) {
   BinaryHeap<std::string_view> uut{{"one", "two", "three", "four"}};
   EXPECT_EQ(uut.GetLeft(0).value().get(), "two");

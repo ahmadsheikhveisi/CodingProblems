@@ -8,7 +8,7 @@
 
 #include "solution.hpp"
 
-template<typename T>
+template <typename T>
 BinarySearchTree<T> BuildBinarySearchTree(std::vector<T> const& vec) {
   if (vec.size() < 1) {
     std::cout << "can't build bst\n";
@@ -33,7 +33,7 @@ TEST(BSTSequence, test1) {
 
 TEST(BSTSequence, test2) {
   [[maybe_unused]] Solution<int> uut {};
-  BinarySearchTree<int> bst { 5 };
+  BinarySearchTree<int> bst{5};
   bst.Insert(7);
   bst.Insert(3);
   bst.Insert(2);

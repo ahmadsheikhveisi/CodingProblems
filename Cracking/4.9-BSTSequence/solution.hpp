@@ -15,6 +15,7 @@
 #define CRACKING_4_9_BSTSEQUENCE_SOLUTION_HPP_
 
 #include <algorithm>
+#include <list>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -28,9 +29,16 @@ template <typename T>
 class Solution {
  public:
   using NodePtr = std::shared_ptr<typename BinarySearchTree<T>::Node>;
-  std::vector<std::vector<T>> FindAllArrays(
+  using Result = std::list<std::list<T>>;
+  Result FindAllArrays(
       [[maybe_unused]] BinarySearchTree<T> bst) {
-    std::vector<std::vector<T>> res{};
+    /**
+     * this methode is based on the idea that the answer is
+     * the permutation of the each level. but that is not correct
+     * we can insert the values from other subtrees and still
+     * get the same binary tree. this solution only gives a partial
+     * answer.
+    Result res{};
     std::unordered_map<NodePtr, size_t> depth_map{};
     std::vector<std::vector<NodePtr>> depth_vec{};
     depth_map[bst.root_] = 0;
@@ -75,10 +83,63 @@ class Solution {
         }
       }
       res = new_res;
-    }
+    }*/
 
+    return FindAllArraysNode(bst.root_);
+  }
+  private:
+  Result FindAllArraysNode(NodePtr node) {
+    if (node == nullptr) {
+      return {};
+    }
+    if ((node->left_ == nullptr) && (node->right_ == nullptr)) {
+      return {{node->value_}};
+    }
+    auto left = FindAllArraysNode(node->left_);
+    auto right = FindAllArraysNode(node->right_);
+
+    auto res = CombineLeftRight(left, right);
+    for (auto & vec : res) {
+      vec.insert(begin(vec),node->value_);
+    }
     return res;
   }
+
+  Result CombineLeftRight(Result const& left,
+                          Result const& right) {
+    Result res{};
+
+    for (auto lit = begin(left); lit != end(left); std::advance(lit, 1)) {
+      for (auto rit = begin(right); rit != end(right); std::advance(rit, 1)) {
+        Result temp{};
+        CombineTwoContainers(temp, {}, *rit, *lit);
+        for (auto const& elm : temp) {
+          res.insert(end(res), elm);
+        }
+      }
+    }
+    return res;                                                
+  }
+  template<typename U>
+  void CombineTwoContainers(Result& res, U prefix, U left, U right) {
+    if (left.empty() || right.empty()) {
+      for (auto const& elm : left) {
+        prefix.insert(end(prefix), elm);
+      }
+      for (auto const& elm : right) {
+        prefix.insert(end(prefix), elm);
+      }
+      res.insert(end(res), prefix);
+      return;
+    }
+    prefix.insert(end(prefix), left.front());
+    left.erase(begin(left));
+    CombineTwoContainers(res, prefix, left, right);
+    prefix.insert(end(prefix), right.front());
+    right.erase(begin(right));
+    CombineTwoContainers(res, prefix, left, right);
+  }
+  
 };
 
 #endif  // CRACKING_4_9_BSTSEQUENCE_SOLUTION_HPP_

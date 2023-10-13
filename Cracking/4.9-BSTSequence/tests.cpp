@@ -45,7 +45,7 @@ TEST(BSTSequence, test2) {
   bst.Insert(6);
   bst.Insert(8);
   auto all_arrays = uut.FindAllArrays(bst);
-  EXPECT_EQ(all_arrays.size(), 12);
+  EXPECT_EQ(all_arrays.size(), 80);
   for (auto const& vec : all_arrays) {
     auto res = BuildBinarySearchTree<int>(vec);
     EXPECT_TRUE(bst == res);

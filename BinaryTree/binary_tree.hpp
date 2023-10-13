@@ -20,15 +20,15 @@ class BinaryTree {
   class Node : public std::enable_shared_from_this<Node> {
     explicit Node(T const& value)
         : value_{value}, left_{nullptr}, right_{nullptr}, parent_{nullptr} {
-      std::cout << "copy constructed\n";
+      // std::cout << "copy constructed\n";
     }
     explicit Node(T&& value)
         : value_{std::move(value)},
           left_{nullptr},
           right_{nullptr},
           parent_{nullptr} {
-      std::cout << "move constructed\n";
-    };
+              // std::cout << "move constructed\n";
+          };
 
    public:
     template <typename U>

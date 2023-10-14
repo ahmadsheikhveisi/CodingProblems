@@ -336,4 +336,24 @@ bool operator==(BinaryTree<T> const& lhs, BinaryTree<T> const& rhs) {
   return true;
 }
 
+template <typename T>
+bool BinaryTreePreOrderSearchNode(
+    std::shared_ptr<typename BinaryTree<T>::Node> node,
+    typename BinaryTree<T>::Visit const& operation) {
+  if (!operation(node)) {
+    return false;
+  }
+  if (node != nullptr) {
+    if (!BinaryTreePreOrderSearchNode<T>(node->left_, operation)) {
+      return false;
+    }
+
+    if (!BinaryTreePreOrderSearchNode<T>(node->right_, operation)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 #endif  // BINARYTREE_BINARY_TREE_HPP_

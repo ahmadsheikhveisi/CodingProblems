@@ -44,6 +44,7 @@ class BinarySearchTree : public BinaryTree<T> {
     } else {
       InsertNode(node->right_, std::forward<U>(value));
     }
+    ++node->sub_tree_size;
   }
   template <typename U>
   bool SearchNode(std::shared_ptr<Node> node, U&& value) {

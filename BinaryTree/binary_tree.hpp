@@ -26,7 +26,8 @@ class BinaryTree {
         : value_{std::move(value)},
           left_{nullptr},
           right_{nullptr},
-          parent_{nullptr} {
+          parent_{nullptr},
+          sub_tree_size{1} {
               // std::cout << "move constructed\n";
           };
 
@@ -40,16 +41,19 @@ class BinaryTree {
     void SetLeft(W&& value) {
       left_ = Node::Create(std::forward<W>(value));
       left_->parent_ = this->shared_from_this();
+      ++sub_tree_size;
     }
     template <typename W>
     void SetRight(W&& value) {
       right_ = Node::Create(std::forward<W>(value));
       right_->parent_ = this->shared_from_this();
+      ++sub_tree_size;
     }
     T value_;
     std::shared_ptr<Node> left_;
     std::shared_ptr<Node> right_;
     std::shared_ptr<Node> parent_;
+    size_t sub_tree_size;
   };
 
   explicit BinaryTree(T const& value) : root_{Node::Create(value)} {}

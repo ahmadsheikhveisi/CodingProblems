@@ -104,4 +104,36 @@ class SolutionLogN : public BinarySearchTree<T> {
   }
 };
 
+template <typename T>
+class SolutionLogNOpt : public BinarySearchTree<T> {
+ public:
+  using NodePtr = std::shared_ptr<typename BinarySearchTree<T>::Node>;
+  template <typename U>
+  explicit SolutionLogNOpt(U&& val)
+      : BinarySearchTree<T>(std::forward<U>(val)) {}
+  NodePtr GetRandomNode() {
+    return GetRandomNodeRec(
+        BinarySearchTree<T>::root_,
+        GetRandomValue(BinarySearchTree<T>::root_->sub_tree_size));
+  }
+
+  size_t BinaryTreeSize() const {
+    return BinarySearchTree<T>::root_->sub_tree_size;
+  }
+
+ private:
+  NodePtr GetRandomNodeRec(NodePtr node, size_t random_index) {
+    auto const left_size =
+        (node->left_ == nullptr) ? 0 : node->left_->sub_tree_size;
+
+    if (random_index < left_size) {
+      return GetRandomNodeRec(node->left_, random_index);
+    } else if (left_size == random_index) {
+      return node;
+    } else {
+      return GetRandomNodeRec(node->right_, random_index - left_size - 1);
+    }
+  }
+};
+
 #endif  // CRACKING_4_11_RANDOMNODE_SOLUTION_HPP_

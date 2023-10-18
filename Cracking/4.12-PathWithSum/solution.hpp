@@ -26,7 +26,7 @@
 class Solution {
  public:
   using NodePtr = std::shared_ptr<BinaryTree<int32_t>::Node>;
-
+  // time complexity is O(N LogN)
   size_t CountPathWithSum(NodePtr node, int32_t sum) {
     if (node == nullptr) {
       return 0;

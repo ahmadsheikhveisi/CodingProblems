@@ -39,9 +39,52 @@ class Solution {
     auto const all_right = CountPathWithSum(node->right_, sum);
     // std::cout << " All right " << all_right << '\n';
     size_t res{start_from_here + all_left + all_right};
-    std::cout << node->value_ << ' ' << res << '\n';
+    // std::cout << node->value_ << ' ' << res << '\n';
 
     return res;
+  }
+
+  size_t CountPathWithSumOpt(NodePtr node, int32_t sum) {
+    std::unordered_map<int32_t, size_t> mp{};
+    return CountPathWithSumOptRec(node, sum, 0, mp);
+  }
+
+ private:
+  size_t CountPathWithSumOptRec(
+      NodePtr node, int32_t target_sum, int32_t running_sum,
+      std::reference_wrapper<std::unordered_map<int32_t, size_t>> rmp) {
+    auto& mp = rmp.get();
+    if (node == nullptr) {
+      return 0;
+    }
+    running_sum += node->value_;
+    auto sum = running_sum - target_sum;
+    size_t total_path{0};
+    if (mp.find(sum) != end(mp)) {
+      total_path = mp[sum];
+    }
+    if (running_sum == target_sum) {
+      ++total_path;
+    }
+    ++mp[running_sum];
+    total_path +=
+        CountPathWithSumOptRec(node->left_, target_sum, running_sum, rmp);
+    total_path +=
+        CountPathWithSumOptRec(node->right_, target_sum, running_sum, rmp);
+    DecrementHashMap(rmp, running_sum);
+    return total_path;
+  }
+
+  void DecrementHashMap(
+      std::reference_wrapper<std::unordered_map<int32_t, size_t>> rmp,
+      int32_t key) {
+    auto& mp = rmp.get();
+    if (mp.find(key) != end(mp)) {
+      --mp[key];
+      if (mp[key] == 0) {
+        mp.erase(key);
+      }
+    }
   }
 
   size_t CountPathWithSumSubTree(NodePtr node, int32_t sum) {

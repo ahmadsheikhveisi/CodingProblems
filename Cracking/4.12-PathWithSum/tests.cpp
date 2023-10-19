@@ -24,7 +24,8 @@ TEST(CheckSubTree, test1) {
   bt.root_->right_->right_->SetLeft(13);
   bt.root_->right_->right_->SetRight(14);
 
-  std::cout << uut.CountPathWithSum(bt.root_, 10) << '\n';
+  EXPECT_EQ(uut.CountPathWithSum(bt.root_, 10), 5);
+  EXPECT_EQ(uut.CountPathWithSumOpt(bt.root_, 10), 5);
 }
 
 TEST(CheckSubTree, test2) {
@@ -39,5 +40,6 @@ TEST(CheckSubTree, test2) {
   bt.root_->left_->left_->SetRight(-2);
   bt.root_->left_->right_->SetRight(2);
 
-  std::cout << uut.CountPathWithSum(bt.root_, 8) << '\n';
+  EXPECT_EQ(uut.CountPathWithSum(bt.root_, 8), 3);
+  EXPECT_EQ(uut.CountPathWithSumOpt(bt.root_, 8), 3);
 }

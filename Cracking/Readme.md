@@ -42,4 +42,6 @@
  * you can't have std::optional< with the same type> as a member variable
  * it is not possible to have a vector of references. you need reference wrapper.
  * To access a method in dependent type base, you need this->. otherwise the type is not deduced.
+ * Mind the left shift overflow. gcc masks the left shift with 31 meaning any shift larger than
+ 32 will have no effect. byte << (count - 1) check if count is zero
   

@@ -24,11 +24,19 @@ constexpr T ClearBit(T const& num, size_t bit) {
 
 template <typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
 constexpr T ClearBitRange(T const& num, size_t from, size_t to) {
+  if (from > to) {
+    return num;
+  }
+  if (from > (sizeof(T) * 8)) {
+    return num;
+  }
   T mask = (static_cast<T>(0x01) << from) - 1;
   // -1 = ~(0)
   // this causes compiler warning of left shifting a negative number
   // mask |= (~static_cast<T>(0x0)) << (to + 1);
-  mask |= ~((static_cast<T>(0x01) << (to + 1)) - 1);
+  if (to < (sizeof(T) * 8) - 1) {
+    mask |= ~((static_cast<T>(0x01) << (to + 1)) - 1);
+  }
   return (num & mask);
 }
 

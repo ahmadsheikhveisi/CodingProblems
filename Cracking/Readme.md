@@ -44,4 +44,6 @@
  * To access a method in dependent type base, you need this->. otherwise the type is not deduced.
  * Mind the left shift overflow. gcc masks the left shift with 31 meaning any shift larger than
  32 will have no effect. byte << (count - 1) check if count is zero
+ * std::byte is a replacement for uint8_t, but it is an enum class
+ * "If the operand passed to an arithmetic operator is integral or unscoped enumeration type, then before any other action (but after lvalue-to-rvalue conversion, if applicable), the operand undergoes integral promotion."
   

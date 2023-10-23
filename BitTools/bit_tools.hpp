@@ -42,8 +42,8 @@ constexpr T ClearBitRange(T const& num, size_t from, size_t to) {
 
 template <typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
 constexpr T SetBitRange(T const& num, size_t from, size_t to) {
-  T mask = (static_cast<T>(0x01) << (to - from + 1)) - 1;
-  mask <<= from;
+  T mask = static_cast<T>((static_cast<T>(0x01) << (to - from + 1)) - 1);
+  mask = static_cast<T>(mask << from);
   return (num | mask);
 }
 

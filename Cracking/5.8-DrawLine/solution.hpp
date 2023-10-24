@@ -40,8 +40,8 @@ class Solution {
     size_t first_byte{((y * width) / 8) + x1 / 8};
     size_t last_byte{((y * width) / 8) + x2 / 8};
     if (first_byte != last_byte) {
-      screen[first_byte] = SetBitRange(screen[first_byte], 0, x1 % 8);
-      screen[last_byte] = SetBitRange(screen[last_byte], x2 % 8, 7);
+      screen[first_byte] = SetBitRange(screen[first_byte], x1 % 8, 7);
+      screen[last_byte] = SetBitRange(screen[last_byte], 0, x2 % 8);
       for (size_t cnt{first_byte + 1}; cnt < last_byte; ++cnt) {
         screen[cnt] = 0xFF;
       }

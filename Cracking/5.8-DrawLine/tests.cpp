@@ -15,10 +15,11 @@ TEST(DebuggerTest, test1) {
   std::vector<uint8_t> screen((height * width / 8), 0);
   uut.DrawLine(screen, width, 3, 20, 1);
   uut.DrawLine(screen, width, 3, 7, 0);
-  // uut.DrawLine(screen, width, 16, 20, 0);
+  uut.DrawLine(screen, width, 16, 20, 0);
   for (size_t y{0}; y < height; ++y) {
     for (size_t x{0}; x < width / 8; ++x) {
-      std::cout << std::bitset<8>(screen[x + (y * width / 8)]) << ' ';
+      std::cout << std::bitset<8>(screen[(width / 8 - x - 1) + (y * width / 8)])
+                << ' ';
     }
     std::cout << '\n';
   }

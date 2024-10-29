@@ -34,6 +34,8 @@
  */
 
 #include <algorithm>
+#include <array>
+#include <cstdint>
 #include <iostream>
 #include <list>
 #include <memory>

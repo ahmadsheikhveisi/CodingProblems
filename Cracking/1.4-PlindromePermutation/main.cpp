@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cstdint>
 #include <string_view>
 #include <type_traits>
 #include <unordered_map>

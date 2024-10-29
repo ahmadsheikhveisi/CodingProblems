@@ -17,6 +17,7 @@
  */
 
 #include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string_view>

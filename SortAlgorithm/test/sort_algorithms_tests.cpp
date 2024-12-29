@@ -21,12 +21,13 @@ constexpr std::initializer_list<int> reversed_sorted_arr {90, 64, 34, 25, 22, 12
 
 constexpr std::initializer_list<int> empty_arr {};
 constexpr std::initializer_list<int> size_one_arr {1};
+constexpr std::initializer_list<int> all_equal_arr {1, 1, 1, 1, 1, 1, 1};
 
 template <typename T>
 class SortingAlgorithmsTest : public ::testing::Test {};
 
 using SortAlgorithmsTestingTypes = ::testing::Types<SortAlgorithm::BubbleSort,
-        SortAlgorithm::InsertionSort, SortAlgorithm::SelectionSort>;
+        SortAlgorithm::InsertionSort, SortAlgorithm::SelectionSort, SortAlgorithm::MergeSort>;
 
 template <typename... Ts>
 struct TypeList {};
@@ -113,12 +114,17 @@ TYPED_TEST_P(SortingAlgorithmsTest, SortsSizeOneArray) {
     ProcessTypeList(ContainersLists<size_one_arr.size()>{}, TypeParam{}, size_one_arr, size_one_arr);
 }
 
+TYPED_TEST_P(SortingAlgorithmsTest, SortsAllEqualArray) {
+    ProcessTypeList(ContainersLists<all_equal_arr.size()>{}, TypeParam{}, all_equal_arr, all_equal_arr);
+}
+
 REGISTER_TYPED_TEST_SUITE_P(SortingAlgorithmsTest,
         SortsArray,
         SortsSortedArray,
         SortsReversedSortedArray,
         SortsEmptyArray,
-        SortsSizeOneArray
+        SortsSizeOneArray,
+        SortsAllEqualArray
 );
 
 INSTANTIATE_TYPED_TEST_SUITE_P(SortAlgorithms,

@@ -7,5 +7,6 @@
 #include <bits/bubble_sort.hpp>
 #include <bits/insertion_sort.hpp>
 #include <bits/selection_sort.hpp>
+#include <bits/merge_sort.hpp>
 
 #endif // SORTING_ALGORITHMS_HPP

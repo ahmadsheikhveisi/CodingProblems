@@ -27,7 +27,8 @@ template <typename T>
 class SortingAlgorithmsTest : public ::testing::Test {};
 
 using SortAlgorithmsTestingTypes = ::testing::Types<SortAlgorithm::BubbleSort,
-        SortAlgorithm::InsertionSort, SortAlgorithm::SelectionSort, SortAlgorithm::MergeSort>;
+        SortAlgorithm::InsertionSort, SortAlgorithm::SelectionSort, SortAlgorithm::MergeSort,
+        SortAlgorithm::QuickSort>;
 
 template <typename... Ts>
 struct TypeList {};

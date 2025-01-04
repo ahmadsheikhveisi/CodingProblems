@@ -16,8 +16,10 @@ class MergeSort {
     /// @brief Merge sort algorithm
     ///     Time complexity: O(n log n)
     ///     Space complexity: O(n)
-    ///     number of swaps is O(n log n)
-    ///     number of comparisons is O(n log n)
+    ///     if the input is already sorted, the best case time complexity is O(n log n)
+    ///     if the input is sorted in reverse order, the worst case time complexity is O(n log n)
+    ///     number of swaps is O(n log n), best case is O(0)
+    ///     number of comparisons is O(n log n), best case is O(n log n)
     /// @param range 
     static void Sort(std::ranges::range auto& range) {
         if (std::distance(begin(range), end(range)) < 2) {

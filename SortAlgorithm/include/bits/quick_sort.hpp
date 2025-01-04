@@ -58,10 +58,10 @@ class QuickSort {
         size_t high_cnt = high;
 
         while (low_cnt <= high_cnt) {
-            while (low_cnt <= high_cnt && *(std::next(begin(range), low_cnt)) <= pivot_value) {
+            while ((low_cnt <= high_cnt) && (*(std::next(begin(range), low_cnt)) <= pivot_value)) {
                 ++low_cnt;
             }
-            while (low_cnt <= high_cnt && *(std::next(begin(range), high_cnt)) > pivot_value) {
+            while ((low_cnt <= high_cnt) && (*(std::next(begin(range), high_cnt)) > pivot_value)) {
                 --high_cnt;
             }
             if (low_cnt < high_cnt) {

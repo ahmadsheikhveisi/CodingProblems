@@ -33,12 +33,13 @@ class HeapSort {
             elem = pq.top();
             pq.pop();
         }*/
-        const ssize_t n{std::distance(std::begin(range), std::end(range))};
+       
+        const auto n = std::distance(std::begin(range), std::end(range));
         if (n < 2) {
             return;
         }
         // start from the most right non-leaf node
-        for (ssize_t i{n / 2 - 1}; i >= 0; i--) {
+        for (auto i = n / 2 - 1; i >= 0; i--) {
             Heapify(range, n, i);
         }
         for (auto i = n - 1; i > 0; i--) {
@@ -48,10 +49,10 @@ class HeapSort {
         }
     }
  private:
-    static void Heapify(std::ranges::range auto& range, ssize_t n, ssize_t root) {
-        ssize_t largest_index{root};
-        ssize_t left_child_index{2 * root + 1};
-        ssize_t right_child_index{2 * root + 2};
+    static void Heapify(std::ranges::range auto& range, auto n, auto root) {
+        auto largest_index = root;
+        auto left_child_index = 2 * root + 1;
+        auto right_child_index = 2 * root + 2;
         if ((left_child_index < n) && (*std::next(begin(range), left_child_index) >
                         *std::next(begin(range), largest_index))) {
             largest_index = left_child_index;

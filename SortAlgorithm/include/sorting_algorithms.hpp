@@ -11,5 +11,7 @@
 #include <bits/quick_sort.hpp>
 #include <bits/heap_sort.hpp>
 #include <bits/cycle_sort.hpp>
+#include <bits/three_way_merge_sort.hpp>
+
 
 #endif // SORTING_ALGORITHMS_HPP

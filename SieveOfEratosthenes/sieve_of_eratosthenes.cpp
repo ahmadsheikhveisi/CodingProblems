@@ -5,6 +5,7 @@
 #include "sieve_of_eratosthenes.hpp"
 
 #include <cstdint>
+#include <cstdlib>
 #include <vector>
 
 std::vector<uint32_t> SieveOfEratosthenes(uint32_t num) {

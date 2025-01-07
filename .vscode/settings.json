@@ -77,7 +77,8 @@
         "charconv": "cpp",
         "format": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "C_Cpp.errorSquiggles": "disabled",

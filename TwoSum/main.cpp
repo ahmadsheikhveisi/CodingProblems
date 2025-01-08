@@ -44,6 +44,12 @@
 */
 class Solution {
  public:
+    /// @brief using hash table to store the number and its index
+    ///        time complexity is O(n)
+    ///        space complexity is O(n)
+    /// @param nums
+    /// @param target
+    /// @return
     std::vector<int> twoSum(const std::vector<int>& nums, int target) {
         std::unordered_map<int, int> hashTable;
         std::vector<int> res;
@@ -53,6 +59,35 @@ class Solution {
                 res.push_back(cnt);
             } else {
                 hashTable[nums[cnt]] = cnt;
+            }
+        }
+        return res;
+    }
+    /// @brief using two pointers
+    ///        time complexity is O(nlogn)
+    ///        space complexity is O(n) because we need to return the index
+    ///        of the original array
+    /// @param nums 
+    /// @param target 
+    /// @return 
+    std::vector<int> twoSum_using_two_pointers(const std::vector<int>& nums, int target) {
+        std::vector<int> res{};
+        std::vector<int> sortedNums(nums);
+        std::sort(begin(sortedNums), end(sortedNums));
+        size_t left = 0;
+        size_t right = sortedNums.size() - 1;
+        while (left < right) {
+            if (sortedNums[left] + sortedNums[right] == target) {
+                break;
+            } else if (sortedNums[left] + sortedNums[right] < target) {
+                ++left;
+            } else {
+                --right;
+            }
+        }
+        for (size_t cnt = 0; cnt < nums.size(); ++cnt) {
+            if (nums[cnt] == sortedNums[left] || nums[cnt] == sortedNums[right]) {
+                res.push_back(cnt);
             }
         }
         return res;
@@ -69,4 +104,7 @@ int main(void) {
     printVec(obj.twoSum({2, 7, 11, 15}, 9));
     printVec(obj.twoSum({3, 2, 4, 15}, 6));
     printVec(obj.twoSum({3, 3}, 6));
+    printVec(obj.twoSum_using_two_pointers({2, 7, 11, 15}, 9));
+    printVec(obj.twoSum_using_two_pointers({3, 2, 4, 15}, 6));
+    printVec(obj.twoSum_using_two_pointers({3, 3}, 6));
 }

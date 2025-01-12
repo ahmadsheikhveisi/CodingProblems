@@ -116,6 +116,11 @@ class Solution {
 */
 class Solution2 {
  public:
+    /// @brief using two pointers approach
+    ///        time complexity is O(n^2)
+    ///        space complexity is O(1)
+    /// @param in_nums
+    /// @return
     std::vector<std::vector<int>> threeSum(const std::vector<int>& in_nums) {
         std::vector<int> nums{in_nums};
         std::vector<std::vector<int>> res;

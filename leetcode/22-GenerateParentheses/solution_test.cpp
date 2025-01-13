@@ -26,4 +26,7 @@ INSTANTIATE_TEST_SUITE_P(LeetCode_22_Suite,
                         LeetCode_22_GenerateParentheses,
                         ::testing::Values(std::make_tuple(3,
                             std::vector<std::string>{
-                                "((()))", "(()())", "(())()", "()(())", "()()()"})));
+                                "((()))", "(()())", "(())()", "()(())", "()()()"}),
+                                std::make_tuple(2,
+                            std::vector<std::string>{
+                                "(())", "()()"})));

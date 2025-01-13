@@ -23,9 +23,23 @@
 class Solution {
 public:
     std::vector<std::string> generateParenthesis(int n) {
-        return std::vector<std::string>(n, "");
+        permute("(", n - 1, n);
+        return results;
     }
  private:
+    std::vector<std::string> results{};
+    void permute(std::string pre, int open_cnt, int close_cnt) {
+        if ((open_cnt == 0) && (close_cnt == 0)) {
+            results.push_back(pre);
+            return;
+        }
+        if (open_cnt > 0) {
+            permute(pre + "(", open_cnt - 1, close_cnt);
+        }
+        if (open_cnt < close_cnt) {
+            permute(pre + ")", open_cnt, close_cnt - 1);
+        }
+    }
 };
 
 

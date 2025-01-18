@@ -21,8 +21,8 @@
 *     -3 * 10^4 <= nums[i] <= 3 * 10^4
 *     Each element in the array appears twice except for one element which appears only once.
 */
-#ifndef MERGE_TWO_SORTED_ARRAYS_88
-#define MERGE_TWO_SORTED_ARRAYS_88
+#ifndef SINGLE_ELEMENT_150
+#define SINGLE_ELEMENT_150
 
 #include <vector>
 
@@ -39,4 +39,4 @@ class Solution {
 };
 
 
-#endif // MERGE_TWO_SORTED_ARRAYS_88
+#endif // SINGLE_ELEMENT_150

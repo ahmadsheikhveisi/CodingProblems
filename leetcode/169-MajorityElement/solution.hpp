@@ -20,8 +20,8 @@
 * 
 * Follow-up: Could you solve the problem in linear time and in O(1) space?
 */
-#ifndef MERGE_TWO_SORTED_ARRAYS_88
-#define MERGE_TWO_SORTED_ARRAYS_88
+#ifndef MAJORITY_ELEMENT_169
+#define MAJORITY_ELEMENT_169
 
 #include <vector>
 
@@ -47,4 +47,4 @@ class Solution {
 };
 
 
-#endif // MERGE_TWO_SORTED_ARRAYS_88
+#endif // MAJORITY_ELEMENT_169

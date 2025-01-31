@@ -41,8 +41,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
-
-class Solution_two_pointer {
+ // two_pointers
+class Solution {
 public:
     ListNode* sortList(ListNode* head) {
         if(!head)return NULL;
@@ -91,7 +91,7 @@ public:
 };
 
 
-class Solution {
+class Solution_get_length {
  public:
     ListNode* sortList(ListNode* head) {
         if (!head || !head->next) return head;

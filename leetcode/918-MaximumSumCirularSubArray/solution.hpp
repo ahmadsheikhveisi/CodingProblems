@@ -55,23 +55,25 @@ class Solution {
             return nums[0];
         }
         int max_sum{nums[0]};
-        int running_sum{max_sum};
+        int running_sum_max{max_sum};
+        int total_sum{nums[0]};
+        int min_sum{nums[0]};
+        int running_sum_min{min_sum};
+        size_t negative_count{nums[0] < 0 ? static_cast<size_t>(1) : 0};
         for (std::size_t cnt{1}; cnt < nums.size(); ++cnt) {
-            running_sum = std::max(nums[cnt], running_sum + nums[cnt]);
-            max_sum = std::max(running_sum, max_sum);
+            running_sum_max = std::max(nums[cnt], running_sum_max + nums[cnt]);
+            max_sum = std::max(running_sum_max, max_sum);
+            total_sum += nums[cnt];
+            if (nums[cnt] < 0) {
+                ++negative_count;
+            }
+            running_sum_min = std::min(nums[cnt], running_sum_min + nums[cnt]);
+            min_sum = std::min(running_sum_min, min_sum);
         }
-        if (std::count_if(begin(nums), end(nums), [](int mem){ return mem < 0;}) ==
-            static_cast<int>(nums.size())) {
+        if (negative_count == nums.size()) {
             return max_sum;
         }
-        int min_sum{nums[0]};
-        running_sum = min_sum;
-        for (std::size_t cnt{1}; cnt < nums.size(); ++cnt) {
-            running_sum = std::min(nums[cnt], running_sum + nums[cnt]);
-            min_sum = std::min(running_sum, min_sum);
-        }
-
-        return std::max(max_sum, std::accumulate(begin(nums), end(nums), 0) -  min_sum);
+        return std::max(max_sum, total_sum -  min_sum);
     }
  private:
 };

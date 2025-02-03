@@ -47,7 +47,43 @@
 
 class Solution {
  public:
-    int editDistance([[maybe_unused]] std::string word1, [[maybe_unused]] std::string word2) {
+    // optimized space to O(n) where n is the size of the shorter string.
+    int editDistance(std::string word1, std::string word2) {
+        if ((word1.size() == 0) || (word2.size() == 0)) {
+            return static_cast<int>(std::max(word1.size(), word2.size()));
+        }
+        // s1 is the shorter
+        // s2 is the longer
+        auto s1_size = std::min(word1.size(), word2.size());
+        auto s2_size = s1_size == word1.size() ? word2.size() : word1.size();
+        std::string& s1{s1_size == word1.size() ? word1 : word2};
+        std::string& s2{s1_size == word1.size() ? word2 : word1};
+        // s2 is the row
+        // s1 is the columns.
+        std::vector<size_t> dp(s1_size + 1,  0);
+        // this keeps track of dp[cnt1 - 1][cnt2 - 1]
+        size_t prev{0};
+        // initialize the first row
+        for (size_t cnt{0}; cnt <= s1_size; ++cnt) {
+            dp[cnt] = cnt;
+        }
+        for (size_t cnt2{1}; cnt2 <= s2_size; ++cnt2) {
+            prev = dp[0];
+            dp[0] = cnt2;
+            for (size_t cnt1{1}; cnt1 <= s1_size; ++cnt1) {
+                auto temp = dp[cnt1];
+                if (s1[cnt1 - 1] == s2[cnt2 - 1]) {
+                    dp[cnt1] = prev;
+                } else {
+                    dp[cnt1] = 1 + std::min(dp[cnt1 - 1], std::min(dp[cnt1],
+                                                prev));
+                }
+                prev = temp;
+            }
+        }
+        return static_cast<int>(dp[s1_size]);
+    }
+    int editDistance_space_mxn([[maybe_unused]] std::string word1, [[maybe_unused]] std::string word2) {
         if ((word1.size() == 0) || (word2.size() == 0)) {
             return static_cast<int>(std::max(word1.size(), word2.size()));
         }

@@ -89,66 +89,33 @@ class Solution {
     std::string intToRoman([[maybe_unused]] int num) {
         std::string result{};
         result.reserve(15);
-        int cnt{1};
+        int cnt{0};
         while (num > 0) {
-            auto digit = (num % 10) * cnt;
+            auto digit = (num % 10);
             if (digit != 0) {
-                result = std::string{FindDigit(digit)} + result;
+                result = maps[cnt]->at(digit - 1) + result;
             } 
             num /= 10;
-            cnt *= 10;
+            ++cnt;
         }
         return result;
     }
  private:
-    static constexpr const std::string_view& FindDigit(int digit) {
-        size_t l{0};
-        size_t r{digit_map.size() - 1};
-        while (l < r) {
-            auto mid = l + (r - l) / 2;
-            if (digit_map[mid].first == digit) {
-                return digit_map[mid].second;
-            }
-            if (digit_map[mid].first > digit) {
-                r = mid - 1;
-            } else {
-                l = mid + 1;
-            }
-        }
-        return digit_map[l].second;
-    }
     // std unordered map is a lot slower
-    static constexpr std::array<std::pair<int, std::string_view>, 30> digit_map {
-        std::make_pair<int, std::string_view>(1, "I"),
-        std::make_pair<int, std::string_view>(2, "II"),
-        std::make_pair<int, std::string_view>(3, "III"),
-        std::make_pair<int, std::string_view>(4, "IV"),
-        std::make_pair<int, std::string_view>(5, "V"),
-        std::make_pair<int, std::string_view>(6, "VI"),
-        std::make_pair<int, std::string_view>(7, "VII"),
-        std::make_pair<int, std::string_view>(8, "VIII"),
-        std::make_pair<int, std::string_view>(9, "IX"),
-        std::make_pair<int, std::string_view>(10, "X"),
-        std::make_pair<int, std::string_view>(20, "XX"),
-        std::make_pair<int, std::string_view>(30, "XXX"),
-        std::make_pair<int, std::string_view>(40, "XL"),
-        std::make_pair<int, std::string_view>(50, "L"),
-        std::make_pair<int, std::string_view>(60, "LX"),
-        std::make_pair<int, std::string_view>(70, "LXX"),
-        std::make_pair<int, std::string_view>(80, "LXXX"),
-        std::make_pair<int, std::string_view>(90, "XC"),
-        std::make_pair<int, std::string_view>(100, "C"),
-        std::make_pair<int, std::string_view>(200, "CC"),
-        std::make_pair<int, std::string_view>(300, "CCC"),
-        std::make_pair<int, std::string_view>(400, "CD"),
-        std::make_pair<int, std::string_view>(500, "D"),
-        std::make_pair<int, std::string_view>(600, "DC"),
-        std::make_pair<int, std::string_view>(700, "DCC"),
-        std::make_pair<int, std::string_view>(800, "DCCC"),
-        std::make_pair<int, std::string_view>(900, "CM"),
-        std::make_pair<int, std::string_view>(1000, "M"),
-        std::make_pair<int, std::string_view>(2000, "MM"),
-        std::make_pair<int, std::string_view>(3000, "MMM"),
+    static constexpr std::array ones {
+        "I","II","III","IV","V","VI","VII","VIII","IX"
+    };
+    static constexpr std::array tens {
+        "X","XX","XXX","XL","L","LX","LXX","LXXX","XC"
+    };
+    static constexpr std::array hundereds {
+        "C","CC","CCC","CD","D","DC","DCC","DCCC","CM"
+    };
+    static constexpr std::array<const char*, 9> thousands {
+        "M","MM","MMM"
+    };
+    static constexpr std::array maps {
+        &ones, &tens, &hundereds, &thousands
     };
 };
 #endif // INTEGER_TO_NUM_12

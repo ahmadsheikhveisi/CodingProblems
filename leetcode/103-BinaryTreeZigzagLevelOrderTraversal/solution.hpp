@@ -50,6 +50,7 @@
 
 class Solution {
  public:
+ // we can also do a normal BFS and reverse the vector if needed before pushing it to the result.
     std::vector<std::vector<int>> zigzagLevelOrder([[maybe_unused]] TreeNode* root) {
         std::vector<std::vector<int>> result{};
         if (root == nullptr) {

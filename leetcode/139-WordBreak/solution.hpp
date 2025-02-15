@@ -50,10 +50,25 @@ class Solution {
  public:
     bool wordBreak([[maybe_unused]] std::string_view s,
                    [[maybe_unused]] std::vector<std::string_view> const& wordDict) {
-        std::unordered_map<std::string_view, bool> hash_map{};
-        return WordBreakHashMap(s, wordDict, hash_map);
+        //std::unordered_map<std::string_view, bool> hash_map{};
+        //return WordBreakHashMap(s, wordDict, hash_map);
+        return WordBreakTable(s, wordDict);
     }
  private:
+    bool WordBreakTable(std::string_view s, std::vector<std::string_view> const& wordDict) {
+        std::vector<bool> table(s.size() + 1, false);
+        table[0] = true;
+        for (size_t cnt{0}; cnt < table.size(); ++cnt) {
+            if (table[cnt]) {
+                for (auto const& word : wordDict) {
+                    if (s.substr(cnt).starts_with(word)) {
+                        table[cnt + word.size()] = true;
+                    }
+                }
+            }
+        }
+        return table.back();
+    }
     bool WordBreakHashMap(std::string_view s, std::vector<std::string_view> const& wordDict,
     std::unordered_map<std::string_view, bool>& hash_map) {
         if (s.empty()) {

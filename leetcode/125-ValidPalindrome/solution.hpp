@@ -79,5 +79,28 @@ class Solution {
         }
         return 0;
     }
+    /*
+        if (s.size() < 2) {
+            return true;
+        }
+        size_t l{0};
+        size_t r{s.size() - 1};
+        while (l < r) {
+            if (std::isalnum(s[l]) == 0) {
+                ++l;
+                continue;
+            }
+            if (std::isalnum(s[r]) == 0) {
+                --r;
+                continue;
+            }
+            if (std::tolower(s[l]) != std::tolower(s[r])) {
+                return false;
+            }
+            ++l;
+            --r;
+        }
+        return true;
+    */
 };
 #endif // VALID_PALINDROME_125
